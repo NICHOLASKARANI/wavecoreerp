@@ -13,6 +13,9 @@
     "@nestjs/platform-express": "^10.3.0",
     "@prisma/client": "^5.22.0",
     "bcrypt": "^5.1.1",
+    "compression": "^1.8.1",
+    "helmet": "^8.2.0",
+    "jsonwebtoken": "^9.0.3",
     "prisma": "^5.22.0",
     "reflect-metadata": "^0.2.1",
     "rxjs": "^7.8.1"
