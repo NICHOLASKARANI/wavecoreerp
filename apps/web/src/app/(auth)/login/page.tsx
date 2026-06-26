@@ -87,7 +87,7 @@ export default function LoginPage() {
           </form>
           <p className="mt-6 text-sm text-gray-500">No account? <Link href="/register" className="font-semibold text-blue-600">Create one</Link></p>
           <div className="mt-4 flex gap-3"><button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"><Fingerprint className="h-5 w-5 text-gray-400"/></button><button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"><QrCode className="h-5 w-5 text-gray-400"/></button></div>
-          <p className="mt-8 text-center text-xs text-gray-400">KES 1,000/month · M-Pesa Till 4760783 · WAVECORE v2.0</p>
+          <p className="mt-8 text-center text-xs text-gray-400">KES 1,000/month Â· M-Pesa Till 4760783 Â· WAVECORE v2.0</p>
         </div>
       </div>
     </div>
