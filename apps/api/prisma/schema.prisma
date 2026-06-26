@@ -8,13 +8,27 @@ datasource db {
 }
 
 model Tenant {
-  id        String   @id @default(cuid())
-  name      String
-  slug      String   @unique
-  email     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  users     User[]
+  id                 String   @id @default(cuid())
+  name               String
+  slug               String   @unique
+  email              String
+  phone              String?
+  subscriptionStatus String   @default("PENDING")
+  subscriptionPlan   String   @default("FREE")
+  trialEndsAt        DateTime?
+  subscriptionEndsAt DateTime?
+  baseCurrency       String   @default("KES")
+  isActive           Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  users              User[]
+  products           Product[]
+  customers          Customer[]
+  suppliers          Supplier[]
+  employees          Employee[]
+  sales              Sale[]
+  invoices           Invoice[]
+  expenses           Expense[]
 }
 
 model User {
@@ -24,10 +38,193 @@ model User {
   passwordHash String
   firstName    String
   lastName     String
+  phone        String?
+  avatar       String?
   isActive     Boolean   @default(true)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   tenant       Tenant    @relation(fields: [tenantId], references: [id])
 
   @@unique([tenantId, email])
+}
+
+model Product {
+  id              String       @id @default(cuid())
+  tenantId        String
+  sku             String
+  barcode         String?
+  name            String
+  slug            String
+  description     String?
+  type            String       @default("SIMPLE")
+  salePrice       Decimal      @db.Decimal(18, 4)
+  costPrice       Decimal?     @db.Decimal(18, 4)
+  taxRate         Decimal?     @db.Decimal(5, 2)
+  minStockLevel   Int          @default(0)
+  reorderPoint    Int          @default(0)
+  reorderQuantity Int          @default(0)
+  imageUrl        String?
+  isActive        Boolean      @default(true)
+  isTaxable       Boolean      @default(true)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  deletedAt       DateTime?
+  tenant          Tenant       @relation(fields: [tenantId], references: [id])
+  stockLevels     StockLevel[]
+  saleItems       SaleItem[]
+
+  @@unique([tenantId, sku])
+}
+
+model StockLevel {
+  id                String   @id @default(cuid())
+  tenantId          String
+  productId         String
+  warehouseId       String
+  quantityOnHand    Int      @default(0)
+  quantityReserved  Int      @default(0)
+  quantityAvailable Int      @default(0)
+  reorderPoint      Int      @default(0)
+  updatedAt         DateTime @updatedAt
+  createdAt         DateTime @default(now())
+  product           Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, productId, warehouseId])
+}
+
+model Customer {
+  id             String   @id @default(cuid())
+  tenantId       String
+  customerNumber String
+  firstName      String?
+  lastName       String?
+  companyName    String?
+  email          String?
+  phone          String?
+  address        String?
+  city           String?
+  loyaltyPoints  Int      @default(0)
+  totalPurchases Decimal  @default(0) @db.Decimal(18, 4)
+  lastPurchaseAt DateTime?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  deletedAt      DateTime?
+  tenant         Tenant   @relation(fields: [tenantId], references: [id])
+  sales          Sale[]
+
+  @@unique([tenantId, customerNumber])
+}
+
+model Supplier {
+  id             String   @id @default(cuid())
+  tenantId       String
+  supplierNumber String
+  companyName    String
+  contactPerson  String?
+  email          String?
+  phone          String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  deletedAt      DateTime?
+  tenant         Tenant   @relation(fields: [tenantId], references: [id])
+
+  @@unique([tenantId, supplierNumber])
+}
+
+model Employee {
+  id             String   @id @default(cuid())
+  tenantId       String
+  employeeNumber String
+  firstName      String
+  lastName       String
+  email          String?
+  phone          String?
+  jobTitle       String?
+  salary         Decimal? @db.Decimal(18, 4)
+  salaryCurrency String   @default("KES")
+  hireDate       DateTime @default(now())
+  status         String   @default("ACTIVE")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  deletedAt      DateTime?
+  tenant         Tenant   @relation(fields: [tenantId], references: [id])
+
+  @@unique([tenantId, employeeNumber])
+}
+
+model Sale {
+  id            String     @id @default(cuid())
+  tenantId      String
+  saleNumber    String
+  customerId    String?
+  saleDate      DateTime   @default(now())
+  subtotal      Decimal    @db.Decimal(18, 4)
+  discountTotal Decimal    @default(0) @db.Decimal(18, 4)
+  taxTotal      Decimal    @default(0) @db.Decimal(18, 4)
+  grandTotal    Decimal    @db.Decimal(18, 4)
+  amountPaid    Decimal    @db.Decimal(18, 4)
+  balanceDue    Decimal    @default(0) @db.Decimal(18, 4)
+  currency      String     @default("KES")
+  status        String     @default("COMPLETED")
+  paymentStatus String     @default("PAID")
+  paymentMethod String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  tenant        Tenant     @relation(fields: [tenantId], references: [id])
+  customer      Customer?  @relation(fields: [customerId], references: [id])
+  items         SaleItem[]
+
+  @@unique([tenantId, saleNumber])
+}
+
+model SaleItem {
+  id         String   @id @default(cuid())
+  tenantId   String
+  saleId     String
+  productId  String
+  quantity   Int
+  unitPrice  Decimal  @db.Decimal(18, 4)
+  totalPrice Decimal  @db.Decimal(18, 4)
+  createdAt  DateTime @default(now())
+  sale       Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  product    Product  @relation(fields: [productId], references: [id])
+}
+
+model Invoice {
+  id            String   @id @default(cuid())
+  tenantId      String
+  invoiceNumber String
+  customerId    String?
+  invoiceDate   DateTime @default(now())
+  dueDate       DateTime
+  subtotal      Decimal  @db.Decimal(18, 4)
+  grandTotal    Decimal  @db.Decimal(18, 4)
+  amountPaid    Decimal  @default(0) @db.Decimal(18, 4)
+  balanceDue    Decimal  @db.Decimal(18, 4)
+  currency      String   @default("KES")
+  status        String   @default("DRAFT")
+  paymentStatus String   @default("UNPAID")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  tenant        Tenant   @relation(fields: [tenantId], references: [id])
+
+  @@unique([tenantId, invoiceNumber])
+}
+
+model Expense {
+  id            String   @id @default(cuid())
+  tenantId      String
+  expenseNumber String
+  category      String
+  amount        Decimal  @db.Decimal(18, 4)
+  description   String
+  expenseDate   DateTime @default(now())
+  status        String   @default("PENDING")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  tenant        Tenant   @relation(fields: [tenantId], references: [id])
+
+  @@unique([tenantId, expenseNumber])
 }
