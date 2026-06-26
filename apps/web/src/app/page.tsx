@@ -1,96 +1,54 @@
-'use client';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/stores/auth-store';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { toast } from 'sonner';
-import { Eye, EyeOff, Loader2, Mail, Lock, ArrowRight, Sun, Moon, Wifi, WifiOff, Github, Chrome, Building2, Fingerprint, QrCode } from 'lucide-react';
-import { useTheme } from 'next-themes';
 
-export default function LoginPage() {
-  const router = useRouter();
-  const { login } = useAuth();
-  const { theme, setTheme } = useTheme();
-  const [showPassword, setShowPassword] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isOnline, setIsOnline] = useState(true);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
-
-  useEffect(() => {
-    setIsOnline(navigator.onLine);
-    window.addEventListener('online', () => setIsOnline(true));
-    window.addEventListener('offline', () => setIsOnline(false));
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!isOnline) { toast.error('No internet connection'); return; }
-    setIsSubmitting(true);
-    try {
-      const result = await login(email, password);
-      if (result?.requiresMfa) router.push('/verify-otp?email=' + email);
-      else if (!result?.isSubscribed) router.push('/settings/subscription');
-      else { toast.success('Welcome back!'); router.push('/dashboard'); }
-    } catch { toast.error('Invalid credentials'); }
-    finally { setIsSubmitting(false); }
-  };
-
+export default function LandingPage() {
   return (
-    <div className="flex min-h-screen">
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 relative overflow-hidden items-center justify-center">
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 h-80 w-80 rounded-full bg-purple-500/10 blur-3xl animate-pulse" />
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 text-white overflow-hidden">
+      <nav className="flex items-center justify-between px-8 py-5 border-b border-white/10 backdrop-blur-sm">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg shadow-blue-500/25">
+            <svg viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6 text-white"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <span className="text-xl font-bold">WAVECORE<span className="text-blue-400">ERP</span></span>
         </div>
-        <div className="relative z-10 max-w-lg px-12">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-xl">
-              <svg viewBox="0 0 24 24" fill="currentColor" className="h-8 w-8 text-white"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            </div>
-            <div><h1 className="text-3xl font-bold text-white">WAVECORE<span className="text-blue-400">ERP</span></h1><p className="text-sm text-blue-200/80">AI-Powered Enterprise Platform</p></div>
+        <div className="flex items-center gap-6">
+          <a href="#features" className="text-sm text-gray-300 hover:text-white">Features</a>
+          <a href="#pricing" className="text-sm text-gray-300 hover:text-white">Pricing</a>
+          <Link href="/login" className="rounded-lg bg-white/10 px-5 py-2.5 text-sm font-medium hover:bg-white/20">Sign In</Link>
+          <Link href="/register" className="rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-5 py-2.5 text-sm font-medium hover:from-blue-500 hover:to-purple-500 shadow-lg">Start Free</Link>
+        </div>
+      </nav>
+      <section className="relative px-8 py-24 text-center">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl animate-pulse" />
+          <div className="absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-purple-500/10 blur-3xl animate-pulse" />
+        </div>
+        <div className="relative mx-auto max-w-4xl">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm">
+            <span className="flex h-2 w-2 rounded-full bg-green-400 animate-pulse" />
+            <span className="text-gray-300">AI-Powered Enterprise ERP Platform</span>
           </div>
-          <h2 className="text-4xl font-bold text-white leading-tight mb-4">Intelligent ERP for Modern Enterprises</h2>
-          <p className="text-lg text-blue-200/60 mb-8">AI-powered inventory, accounting, HRM, CRM, and analytics.</p>
-          <div className="grid grid-cols-3 gap-4">
-            {[{label:'Businesses',value:'10,000+'},{label:'Transactions',value:'KES 50B+'},{label:'Uptime',value:'99.9%'}].map(s => <div key={s.label} className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm p-4"><p className="text-2xl font-bold text-white">{s.value}</p><p className="text-xs text-blue-200/60">{s.label}</p></div>)}
+          <h1 className="text-6xl font-bold leading-tight">The Future of<br /><span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Business Management</span></h1>
+          <p className="mt-6 text-lg text-gray-400 max-w-2xl mx-auto">AI-powered ERP that automates inventory, accounting, HR, CRM, and analytics. Built for African businesses.</p>
+          <div className="mt-10 flex items-center justify-center gap-4">
+            <Link href="/register" className="rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-4 text-lg font-semibold hover:from-blue-500 hover:to-purple-500 shadow-xl">Get Started - KES 1,000/month</Link>
+            <a href="#demo" className="rounded-xl border border-white/20 px-8 py-4 text-lg font-semibold hover:bg-white/5">Watch Demo</a>
+          </div>
+          <div className="mt-12 grid grid-cols-4 gap-8">
+            {[{v:'10,000+',l:'Businesses'},{v:'KES 50B+',l:'Transactions'},{v:'99.9%',l:'Uptime'},{v:'24/7',l:'AI Support'}].map(s => <div key={s.l}><p className="text-3xl font-bold">{s.v}</p><p className="mt-1 text-sm text-gray-400">{s.l}</p></div>)}
           </div>
         </div>
-      </div>
-      <div className="flex w-full lg:w-1/2 items-center justify-center bg-white dark:bg-slate-900 px-6">
-        <div className="w-full max-w-md">
-          <div className="flex items-center justify-between mb-8">
-            <div className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium ${isOnline ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-              <div className={`h-2 w-2 rounded-full ${isOnline ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />{isOnline ? 'Online' : 'Offline'}
-            </div>
-            <button onClick={() => setTheme(theme==='dark'?'light':'dark')} className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-amber-300 to-orange-500 dark:from-slate-700 dark:to-slate-600 shadow-lg">
-              <Sun className="absolute h-4 w-4 text-white dark:opacity-0" /><Moon className="absolute h-4 w-4 text-white opacity-0 dark:opacity-100" />
-            </button>
-          </div>
-          <h2 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Welcome back</h2>
-          <p className="text-gray-500 mb-8">Sign in to your WAVECORE account</p>
-          <div className="grid grid-cols-3 gap-3 mb-6">
-            <Button variant="outline" className="w-full gap-2"><Chrome className="h-4 w-4 text-blue-600"/><span className="text-xs">Google</span></Button>
-            <Button variant="outline" className="w-full gap-2"><Building2 className="h-4 w-4 text-blue-700"/><span className="text-xs">Microsoft</span></Button>
-            <Button variant="outline" className="w-full gap-2"><Github className="h-4 w-4"/><span className="text-xs">GitHub</span></Button>
-          </div>
-          <div className="relative mb-6"><div className="absolute inset-0 flex items-center"><span className="w-full border-t"/></div><div className="relative flex justify-center text-xs uppercase"><span className="bg-white dark:bg-slate-900 px-3 text-gray-400">or with email</span></div></div>
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div><Label>Email</Label><div className="relative"><Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"/><Input type="email" placeholder="you@company.com" className="pl-10 h-12 rounded-xl" value={email} onChange={e=>setEmail(e.target.value)} required/></div></div>
-            <div><div className="flex justify-between"><Label>Password</Label><Link href="/forgot-password" className="text-xs text-blue-600">Forgot?</Link></div><div className="relative"><Lock className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"/><Input type={showPassword?'text':'password'} placeholder="Password" className="pl-10 pr-12 h-12 rounded-xl" value={password} onChange={e=>setPassword(e.target.value)} required/><button type="button" onClick={()=>setShowPassword(!showPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400">{showPassword?<EyeOff className="h-4 w-4"/>:<Eye className="h-4 w-4"/>}</button></div></div>
-            <div className="flex items-center space-x-2"><Checkbox id="remember" checked={rememberMe} onCheckedChange={c=>setRememberMe(!!c)}/><Label htmlFor="remember" className="text-sm text-gray-500">Remember me</Label></div>
-            <Button type="submit" className="w-full h-12 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold shadow-lg" disabled={isSubmitting||!isOnline}>{isSubmitting?<Loader2 className="mr-2 h-5 w-5 animate-spin"/>:<ArrowRight className="mr-2 h-5 w-5"/>}Sign In</Button>
-          </form>
-          <p className="mt-6 text-sm text-gray-500">No account? <Link href="/register" className="font-semibold text-blue-600">Create one</Link></p>
-          <div className="mt-4 flex gap-3"><button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"><Fingerprint className="h-5 w-5 text-gray-400"/></button><button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"><QrCode className="h-5 w-5 text-gray-400"/></button></div>
-          <p className="mt-8 text-center text-xs text-gray-400">KES 1,000/month · M-Pesa Till 4760783 · WAVECORE v2.0</p>
+      </section>
+      <section id="pricing" className="px-8 py-24 bg-white/5 text-center">
+        <h2 className="text-4xl font-bold mb-4">Simple Pricing</h2>
+        <p className="text-gray-400 mb-16">Start with KES 1,000/month</p>
+        <div className="grid gap-8 md:grid-cols-4 max-w-5xl mx-auto">
+          {[{n:'Starter',p:'1,000',u:'5',f:['All Modules','POS','Inventory','CRM']},{n:'Professional',p:'3,000',u:'20',f:['All Starter','Multi-Branch','Reports'],pop:true},{n:'Business',p:'7,500',u:'50',f:['All Pro','API Access','E-Commerce']},{n:'Enterprise',p:'20,000',u:'∞',f:['Custom','White-label','SLA']}].map(x => <div key={x.n} className={`rounded-2xl border p-8 ${x.pop?'border-blue-500 bg-blue-500/10 ring-2 ring-blue-500':'border-white/10 bg-white/5'}`}>{x.pop&&<span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-blue-500 px-4 py-1 text-xs font-bold">POPULAR</span>}<h3 className="text-xl font-bold">{x.n}</h3><p className="mt-4"><span className="text-4xl font-bold">KES {x.p}</span>/mo</p><ul className="mt-6 space-y-3">{x.f.map(f=><li key={f} className="text-sm text-gray-300"><span className="text-green-400 mr-2">✓</span>{f}</li>)}</ul><Link href="/register" className={`mt-8 block w-full rounded-lg py-3 text-sm font-semibold ${x.pop?'bg-gradient-to-r from-blue-600 to-purple-600':'bg-white/10 hover:bg-white/20'}`}>Get Started</Link></div>)}
         </div>
-      </div>
+        <p className="mt-8 text-sm text-gray-400">Pay via M-Pesa Till: <span className="font-bold text-white">4760783</span></p>
+      </section>
+      <footer className="border-t border-white/10 px-8 py-12 text-center">
+        <p className="text-sm text-gray-400">© 2026 WAVECORE Technologies · M-Pesa Till: 4760783 · support@wavecore.app</p>
+      </footer>
     </div>
   );
 }
