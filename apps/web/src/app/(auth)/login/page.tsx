@@ -52,7 +52,7 @@ export default function LoginPage() {
             <div><h1 className="text-2xl font-bold">WAVECORE<span className="text-blue-200">ERP</span></h1></div>
           </div>
           <h2 className="text-4xl font-bold leading-tight mb-4">Smart ERP Platform</h2>
-          <p className="text-lg text-blue-200/80 mb-8">Inventory, POS, CRM, Accounting, HRM, AI Copilot — all in one platform. Built for businesses in Africa and beyond.</p>
+          <p className="text-lg text-blue-200/80 mb-8">Inventory, POS, CRM, Accounting, HRM, AI Copilot â€” all in one platform. Built for businesses in Africa and beyond.</p>
           <div className="grid grid-cols-3 gap-4">
             {[{label:'Businesses',value:'10,000+'},{label:'Countries',value:'40+'},{label:'Uptime',value:'99.9%'}].map(s=><div key={s.label} className="rounded-xl bg-white/10 backdrop-blur p-4"><p className="text-2xl font-bold">{s.value}</p><p className="text-xs text-blue-200/60 mt-1">{s.label}</p></div>)}
           </div>
@@ -89,7 +89,7 @@ export default function LoginPage() {
             <button type="submit" disabled={isSubmitting||!isOnline} className="w-full h-11 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-semibold shadow-lg shadow-blue-200 dark:shadow-blue-900/30 transition flex items-center justify-center gap-2 disabled:opacity-50">{isSubmitting?<Loader2 className="h-4 w-4 animate-spin"/>:<ArrowRight className="h-4 w-4"/>}Sign In</button>
           </form>
           <p className="mt-6 text-center text-sm text-slate-500">Don&apos;t have an account? <Link href="/register" className="font-semibold text-blue-600 hover:text-blue-700">Create one</Link></p>
-          <p className="mt-6 text-center text-xs text-slate-400">KES 1,000/month · M-Pesa Till 4760783 · WAVECORE v2.0</p>
+          <p className="mt-6 text-center text-xs text-slate-400">KES 1,000/month Â· M-Pesa Till 4760783 Â· WAVECORE v2.0</p>
         </div>
       </div>
     </div>

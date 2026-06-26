@@ -37,12 +37,12 @@ export default function LandingPage() {
         <h2 className="text-center text-4xl font-bold text-slate-900 dark:text-white mb-16">Everything Your Business Needs</h2>
         <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
           {[
-            {icon:'📦',title:'Inventory',desc:'Real-time stock, batches, expiry, multi-warehouse'},
-            {icon:'🏪',title:'POS System',desc:'Retail, Restaurant POS with M-Pesa, Cash, Card'},
-            {icon:'👥',title:'CRM',desc:'Leads, pipelines, loyalty, customer portal'},
-            {icon:'📊',title:'Accounting',desc:'Double-entry, invoices, expenses, tax'},
-            {icon:'👷',title:'HRM & Payroll',desc:'Employees, attendance, leave, PAYE, NSSF'},
-            {icon:'🤖',title:'AI Copilot',desc:'Sales forecasting, fraud detection, insights'},
+            {icon:'ðŸ“¦',title:'Inventory',desc:'Real-time stock, batches, expiry, multi-warehouse'},
+            {icon:'ðŸª',title:'POS System',desc:'Retail, Restaurant POS with M-Pesa, Cash, Card'},
+            {icon:'ðŸ‘¥',title:'CRM',desc:'Leads, pipelines, loyalty, customer portal'},
+            {icon:'ðŸ“Š',title:'Accounting',desc:'Double-entry, invoices, expenses, tax'},
+            {icon:'ðŸ‘·',title:'HRM & Payroll',desc:'Employees, attendance, leave, PAYE, NSSF'},
+            {icon:'ðŸ¤–',title:'AI Copilot',desc:'Sales forecasting, fraud detection, insights'},
           ].map(f=><div key={f.title} className="rounded-2xl border bg-white dark:bg-slate-800 dark:border-slate-700 p-8 hover:shadow-lg transition"><div className="text-4xl mb-4">{f.icon}</div><h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">{f.title}</h3><p className="text-slate-500 dark:text-slate-400 text-sm">{f.desc}</p></div>)}
         </div>
       </section>
@@ -50,12 +50,12 @@ export default function LandingPage() {
         <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">Simple Pricing</h2>
         <p className="text-slate-500 dark:text-slate-400 mb-16">Start with KES 1,000/month</p>
         <div className="grid gap-6 md:grid-cols-4 max-w-5xl mx-auto">
-          {[{n:'Starter',p:'1,000',u:'5 Users',f:['All Modules','POS','Inventory','CRM']},{n:'Professional',p:'3,000',u:'20 Users',f:['All Starter','Multi-Branch','Reports'],pop:true},{n:'Business',p:'7,500',u:'50 Users',f:['All Pro','API Access','E-Commerce']},{n:'Enterprise',p:'20,000',u:'Unlimited',f:['Custom','White-label','SLA']}].map(x=><div key={x.n} className={`rounded-2xl border bg-white dark:bg-slate-800 p-8 relative ${x.pop?'border-blue-500 ring-2 ring-blue-500 dark:border-blue-400':'border-slate-200 dark:border-slate-700'}`}>{x.pop&&<span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-blue-600 text-white px-4 py-1 text-xs font-bold">POPULAR</span>}<h3 className="text-xl font-bold text-slate-900 dark:text-white">{x.n}</h3><p className="mt-4"><span className="text-4xl font-bold text-slate-900 dark:text-white">KES {x.p}</span><span className="text-slate-400">/mo</span></p><p className="text-sm text-slate-500 mt-1">{x.u}</p><ul className="mt-6 space-y-3">{x.f.map(f=><li key={f} className="text-sm text-slate-600 dark:text-slate-300"><span className="text-green-500 mr-2">✓</span>{f}</li>)}</ul><Link href="/register" className={`mt-8 block w-full rounded-lg py-3 text-center text-sm font-semibold transition ${x.pop?'bg-gradient-to-r from-blue-600 to-purple-600 text-white':'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600'}`}>Get Started</Link></div>)}
+          {[{n:'Starter',p:'1,000',u:'5 Users',f:['All Modules','POS','Inventory','CRM']},{n:'Professional',p:'3,000',u:'20 Users',f:['All Starter','Multi-Branch','Reports'],pop:true},{n:'Business',p:'7,500',u:'50 Users',f:['All Pro','API Access','E-Commerce']},{n:'Enterprise',p:'20,000',u:'Unlimited',f:['Custom','White-label','SLA']}].map(x=><div key={x.n} className={`rounded-2xl border bg-white dark:bg-slate-800 p-8 relative ${x.pop?'border-blue-500 ring-2 ring-blue-500 dark:border-blue-400':'border-slate-200 dark:border-slate-700'}`}>{x.pop&&<span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-blue-600 text-white px-4 py-1 text-xs font-bold">POPULAR</span>}<h3 className="text-xl font-bold text-slate-900 dark:text-white">{x.n}</h3><p className="mt-4"><span className="text-4xl font-bold text-slate-900 dark:text-white">KES {x.p}</span><span className="text-slate-400">/mo</span></p><p className="text-sm text-slate-500 mt-1">{x.u}</p><ul className="mt-6 space-y-3">{x.f.map(f=><li key={f} className="text-sm text-slate-600 dark:text-slate-300"><span className="text-green-500 mr-2">âœ“</span>{f}</li>)}</ul><Link href="/register" className={`mt-8 block w-full rounded-lg py-3 text-center text-sm font-semibold transition ${x.pop?'bg-gradient-to-r from-blue-600 to-purple-600 text-white':'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600'}`}>Get Started</Link></div>)}
         </div>
         <p className="mt-8 text-slate-500">Pay via M-Pesa Till: <span className="font-bold text-slate-900 dark:text-white">4760783</span></p>
       </section>
       <footer className="border-t py-12 text-center text-sm text-slate-400">
-        © 2026 WAVECORE Technologies · M-Pesa Till: 4760783 · support@wavecore.app
+        Â© 2026 WAVECORE Technologies Â· M-Pesa Till: 4760783 Â· support@wavecore.app
       </footer>
     </div>
   );
