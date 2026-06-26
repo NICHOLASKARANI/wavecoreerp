@@ -6,7 +6,6 @@ import { useAuth } from '@/stores/auth-store';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { Eye, EyeOff, Loader2, Mail, Lock, ArrowRight, Sun, Moon, Wifi, WifiOff, Github, Chrome, Building2, Fingerprint, QrCode } from 'lucide-react';
 import { useTheme } from 'next-themes';
@@ -56,7 +55,7 @@ export default function LoginPage() {
             <div><h1 className="text-3xl font-bold text-white">WAVECORE<span className="text-blue-400">ERP</span></h1><p className="text-sm text-blue-200/80">AI-Powered Enterprise Platform</p></div>
           </div>
           <h2 className="text-4xl font-bold text-white leading-tight mb-4">Intelligent ERP for Modern Enterprises</h2>
-          <p className="text-lg text-blue-200/60 mb-8">AI-powered inventory, accounting, HRM, CRM, and analytics - all in one platform.</p>
+          <p className="text-lg text-blue-200/60 mb-8">AI-powered inventory, accounting, HRM, CRM, and analytics.</p>
           <div className="grid grid-cols-3 gap-4">
             {[{label:'Businesses',value:'10,000+'},{label:'Transactions',value:'KES 50B+'},{label:'Uptime',value:'99.9%'}].map(s => <div key={s.label} className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm p-4"><p className="text-2xl font-bold text-white">{s.value}</p><p className="text-xs text-blue-200/60">{s.label}</p></div>)}
           </div>
@@ -83,7 +82,7 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div><Label>Email</Label><div className="relative"><Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"/><Input type="email" placeholder="you@company.com" className="pl-10 h-12 rounded-xl" value={email} onChange={e=>setEmail(e.target.value)} required/></div></div>
             <div><div className="flex justify-between"><Label>Password</Label><Link href="/forgot-password" className="text-xs text-blue-600">Forgot?</Link></div><div className="relative"><Lock className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"/><Input type={showPassword?'text':'password'} placeholder="Password" className="pl-10 pr-12 h-12 rounded-xl" value={password} onChange={e=>setPassword(e.target.value)} required/><button type="button" onClick={()=>setShowPassword(!showPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400">{showPassword?<EyeOff className="h-4 w-4"/>:<Eye className="h-4 w-4"/>}</button></div></div>
-            <div className="flex items-center space-x-2"><Checkbox id="remember" checked={rememberMe} onCheckedChange={c=>setRememberMe(!!c)}/><Label htmlFor="remember" className="text-sm text-gray-500">Remember me</Label></div>
+            <div className="flex items-center space-x-2"><input type="checkbox" id="remember" checked={rememberMe} onChange={e=>setRememberMe(e.target.checked)} className="h-4 w-4 rounded border-gray-300" /><Label htmlFor="remember" className="text-sm text-gray-500">Remember me</Label></div>
             <Button type="submit" className="w-full h-12 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold shadow-lg" disabled={isSubmitting||!isOnline}>{isSubmitting?<Loader2 className="mr-2 h-5 w-5 animate-spin"/>:<ArrowRight className="mr-2 h-5 w-5"/>}Sign In</Button>
           </form>
           <p className="mt-6 text-sm text-gray-500">No account? <Link href="/register" className="font-semibold text-blue-600">Create one</Link></p>
