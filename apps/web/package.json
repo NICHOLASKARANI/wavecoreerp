@@ -1,0 +1,39 @@
+{
+  "name": "wavecoreerp-web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^15.5.19",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@tanstack/react-query": "^5.50.0",
+    "@tanstack/react-query-devtools": "^5.50.0",
+    "zustand": "^4.5.0",
+    "lucide-react": "^0.400.0",
+    "next-themes": "^0.3.0",
+    "date-fns": "^3.6.0",
+    "recharts": "^2.12.0",
+    "sonner": "^1.5.0",
+    "clsx": "^2.1.0",
+    "tailwind-merge": "^2.4.0",
+    "class-variance-authority": "^0.7.0",
+    "zod": "^3.23.0",
+    "react-hook-form": "^7.52.0",
+    "@hookform/resolvers": "^3.8.0",
+    "axios": "^1.7.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/node": "^20.14.0",
+    "tailwindcss": "^3.4.0",
+    "postcss": "^8.4.0",
+    "autoprefixer": "^10.4.0"
+  }
+}
