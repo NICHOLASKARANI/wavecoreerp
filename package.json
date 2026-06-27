@@ -8,9 +8,12 @@
     "dev": "turbo run dev"
   },
   "dependencies": {
+    "framer-motion": "^12.42.0",
+    "lucide-react": "^1.21.0",
     "next": "^15.5.19",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "recharts": "^3.9.0"
   },
   "devDependencies": {
     "turbo": "^2.0.0"
