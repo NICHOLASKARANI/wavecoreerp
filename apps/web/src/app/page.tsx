@@ -18,7 +18,8 @@ import {
   FileText, Lightbulb, Target, Globe2,
   Plane, Train, Bus, Car, Database,
   Cpu, Activity, RefreshCw, Workflow,
-  LineChart, PieChart as PieChartIcon
+  LineChart, PieChart as PieChartIcon,
+  DollarSign
 } from "lucide-react";
 
 import { Area, AreaChart, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
