@@ -15,7 +15,8 @@ import {
   Rocket, Sparkles, Lightbulb, Target,
   Activity, RefreshCw, Server, Cpu,
   Network, Lock, Clock, ZapOff,
-  Grid3X3, LayoutDashboard, FileText
+  Grid3X3, LayoutDashboard, FileText,
+  Calendar
 } from "lucide-react";
 import { Area, AreaChart, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
@@ -567,8 +568,6 @@ export default function HomePage() {
         </motion.div>
       </section>
 
-      {/* Continue in next batch... */}
-
       {/* Trusted Companies */}
       <section className="py-16 bg-gray-50 dark:bg-gray-900/50 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -766,3 +765,460 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Business Intelligence Dashboard */}
+      <section className="py-20 bg-white dark:bg-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Business Intelligence at Your Fingertips
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Real-time analytics, predictive insights, and interactive dashboards powered by AI
+            </p>
+          </motion.div>
+
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* Left: KPIs */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-4"
+            >
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { label: "Revenue", value: 1245000, icon: DollarSign, color: "#2563EB" },
+                  { label: "Profit", value: 489200, icon: TrendingUp, color: "#22C55E" },
+                  { label: "Orders", value: 8450, icon: ShoppingCart, color: "#F59E0B" },
+                  { label: "Customers", value: 23400, icon: Users, color: "#8B5CF6" },
+                ].map((kpi, index) => (
+                  <motion.div
+                    key={kpi.label}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    whileHover={{ y: -2 }}
+                    className="p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-800/50"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{kpi.label}</span>
+                      <kpi.icon className="w-5 h-5" style={{ color: kpi.color }} />
+                    </div>
+                    <div className="text-3xl font-bold text-gray-900 dark:text-white">
+                      ${(kpi.value / 1000).toFixed(1)}K
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="p-6 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 rounded-2xl border border-blue-200/50 dark:border-blue-800/50"
+              >
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">AI Insights</h3>
+                <div className="space-y-2">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">• Revenue growth: +12.5% this quarter</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">• Top product: Smart Inventory Suite</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">• Customer satisfaction: 94.2%</p>
+                </div>
+              </motion.div>
+            </motion.div>
+
+            {/* Right: Charts */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-4"
+            >
+              <div className="p-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 shadow-lg">
+                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">Revenue Trend</h3>
+                <div className="h-48">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={chartData}>
+                      <XAxis dataKey="name" stroke="#9CA3AF" fontSize={10} />
+                      <YAxis stroke="#9CA3AF" fontSize={10} />
+                      <Tooltip />
+                      <Area type="monotone" dataKey="revenue" stroke="#2563EB" fill="#2563EB" fillOpacity={0.1} strokeWidth={2} />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <motion.div
+                  whileHover={{ y: -2 }}
+                  className="p-4 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200/50 dark:border-gray-800/50"
+                >
+                  <h4 className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">Expenses</h4>
+                  <div className="text-xl font-bold text-gray-900 dark:text-white">$320K</div>
+                  <span className="text-xs text-green-500">-5.2%</span>
+                </motion.div>
+                <motion.div
+                  whileHover={{ y: -2 }}
+                  className="p-4 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200/50 dark:border-gray-800/50"
+                >
+                  <h4 className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">Cash Flow</h4>
+                  <div className="text-xl font-bold text-gray-900 dark:text-white">$156K</div>
+                  <span className="text-xs text-green-500">+8.7%</span>
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Industry Solutions */}
+      <section className="py-20 bg-gray-50 dark:bg-gray-900/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Built for Every Industry
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Tailored solutions for businesses of all sizes and sectors
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {industries.map((industry, index) => (
+              <motion.div
+                key={industry.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.03 }}
+                whileHover={{ y: -5, scale: 1.02 }}
+                className={"p-6 bg-gradient-to-br " + industry.gradient + " rounded-xl text-white cursor-pointer relative overflow-hidden group"}
+              >
+                <div className="relative z-10">
+                  <industry.icon className="w-8 h-8 mb-3" />
+                  <h3 className="text-sm font-semibold">{industry.name}</h3>
+                  <p className="text-xs text-white/70 mt-1">{industry.description}</p>
+                </div>
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+                  whileHover={{ scale: 1.1 }}
+                />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="py-20 bg-white dark:bg-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Enterprise-Grade Features
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Everything you need to run a modern business, built into one platform
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {[
+              { name: "Multi Company", icon: Building, color: "#2563EB" },
+              { name: "Multi Tenant", icon: Users, color: "#22C55E" },
+              { name: "Multi Currency", icon: DollarSign, color: "#F59E0B" },
+              { name: "Multi Language", icon: Globe, color: "#8B5CF6" },
+              { name: "Cloud ERP", icon: Cloud, color: "#EC4899" },
+              { name: "Offline POS", icon: ShoppingCart, color: "#06B6D4" },
+              { name: "Advanced Inventory", icon: Package, color: "#34D399" },
+              { name: "AI Analytics", icon: Brain, color: "#8B5CF6" },
+              { name: "API First", icon: Code, color: "#6366F1" },
+              { name: "Automated Payroll", icon: Users, color: "#F472B6" },
+              { name: "Tax Compliance", icon: Shield, color: "#14B8A6" },
+              { name: "Business Intelligence", icon: BarChart3, color: "#F87171" },
+            ].map((feature, index) => (
+              <motion.div
+                key={feature.name}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.03 }}
+                whileHover={{ y: -3 }}
+                className="p-6 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200/50 dark:border-gray-800/50 hover:border-blue-300 dark:hover:border-blue-700 transition-all cursor-pointer group"
+              >
+                <div className="w-12 h-12 rounded-xl bg-white dark:bg-gray-800 flex items-center justify-center mb-4 shadow-sm group-hover:shadow-md transition-shadow" style={{ color: feature.color }}>
+                  <feature.icon className="w-6 h-6" />
+                </div>
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{feature.name}</h3>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* One Subscription Pricing */}
+      <section className="py-20 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-8"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              One Subscription. Everything Included.
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              No tiers. No hidden fees. One simple price for the entire platform.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="max-w-md mx-auto"
+          >
+            <div className="p-8 bg-white dark:bg-gray-900 rounded-3xl border-2 border-blue-200 dark:border-blue-800 shadow-2xl relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5" />
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl" />
+              <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl" />
+              
+              <div className="relative z-10">
+                <div className="text-center mb-6">
+                  <span className="text-sm font-medium text-blue-600 dark:text-blue-400">Simple Pricing</span>
+                  <div className="text-5xl font-bold text-gray-900 dark:text-white mt-2">
+                    KES 1000
+                    <span className="text-lg font-normal text-gray-500 dark:text-gray-400">/month</span>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  {[
+                    "Unlimited Modules",
+                    "Unlimited Companies",
+                    "Unlimited AI",
+                    "Unlimited Branches",
+                    "Unlimited Updates",
+                    "24/7 Premium Support",
+                  ].map((feature, index) => (
+                    <motion.div
+                      key={feature}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.05 }}
+                      className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                    >
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">{feature}</span>
+                    </motion.div>
+                  ))}
+                </div>
+
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-full mt-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-full text-sm font-medium hover:shadow-xl hover:shadow-blue-500/25 transition-all"
+                >
+                  Start Free Trial
+                </motion.button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-20 bg-white dark:bg-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              What Our Customers Say
+            </h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {testimonials.map((testimonial, index) => (
+              <motion.div
+                key={testimonial.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -5 }}
+                className="p-6 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-sm hover:shadow-xl transition-all"
+              >
+                <div className="flex items-center gap-4 mb-4">
+                  <img 
+                    src={testimonial.image} 
+                    alt={testimonial.name}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                  <div>
+                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white">{testimonial.name}</h4>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{testimonial.role} at {testimonial.company}</p>
+                  </div>
+                </div>
+                <Quote className="w-6 h-6 text-blue-500/30 mb-3" />
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">"{testimonial.quote}"</p>
+                <div className="flex gap-1 mt-4">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQs */}
+      <section className="py-20 bg-gray-50 dark:bg-gray-900/50">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Frequently Asked Questions
+            </h2>
+          </motion.div>
+
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+                className="border border-gray-200/50 dark:border-gray-800/50 rounded-xl overflow-hidden bg-white dark:bg-gray-900"
+              >
+                <button
+                  onClick={() => setActiveFaq(activeFaq === index ? null : index)}
+                  className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                >
+                  <span className="text-sm font-medium text-gray-900 dark:text-white">{faq.question}</span>
+                  <ChevronRight className={"w-4 h-4 text-gray-400 transition-transform " + (activeFaq === index ? "rotate-90" : "")} />
+                </button>
+                <AnimatePresence>
+                  {activeFaq === index && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="px-6 pb-4"
+                    >
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{faq.answer}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 dark:bg-black text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
+            <div className="col-span-2 md:col-span-1">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center">
+                  <Brain className="w-4 h-4 text-white" />
+                </div>
+                <span className="text-lg font-bold">WaveCore</span>
+              </div>
+              <p className="text-sm text-gray-400 mb-4">
+                AI-powered ERP for the future of business.
+              </p>
+              <div className="flex gap-4">
+                <a href="#" className="text-gray-400 hover:text-white transition-colors"><Twitter className="w-5 h-5" /></a>
+                <a href="#" className="text-gray-400 hover:text-white transition-colors"><Linkedin className="w-5 h-5" /></a>
+                <a href="#" className="text-gray-400 hover:text-white transition-colors"><Github className="w-5 h-5" /></a>
+                <a href="#" className="text-gray-400 hover:text-white transition-colors"><Youtube className="w-5 h-5" /></a>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-semibold mb-4">Company</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">About</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-semibold mb-4">Solutions</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">ERP Core</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">AI Copilot</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Analytics</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Mobile App</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-semibold mb-4">Developers</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">API Docs</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">SDK</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Integrations</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Status</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-semibold mb-4">Support</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Community</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Contact Support</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="text-sm text-gray-400">
+              © 2024 WaveCore ERP. All rights reserved.
+            </p>
+            <div className="flex gap-6 text-sm text-gray-400">
+              <a href="#" className="hover:text-white transition-colors">Privacy</a>
+              <a href="#" className="hover:text-white transition-colors">Terms</a>
+              <a href="#" className="hover:text-white transition-colors">Cookies</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
