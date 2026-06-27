@@ -246,8 +246,8 @@ export default function HomePage() {
                   ease: "linear",
                 }}
                 style={{
-                  left: ${Math.random() * 100}%,
-                  top: ${Math.random() * 100}%,
+                  left: Math.random() * 100 + "%",
+                  top: Math.random() * 100 + "%",
                 }}
               />
             ))}
