@@ -1,10 +1,7 @@
 ﻿{
   "framework": "nextjs",
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
+  "buildCommand": "next build",
+  "devCommand": "next dev",
   "installCommand": "npm install",
-  "outputDirectory": ".next",
-  "env": {
-    "NEXT_PUBLIC_VERCEL_ENV": "production"
-  }
+  "outputDirectory": ".next"
 }
