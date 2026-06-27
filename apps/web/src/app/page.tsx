@@ -14,7 +14,8 @@ import {
   Phone, MapPin, Send, Calendar,
   ChevronDown, Server, Network, Lock,
   Award, Briefcase, Heart, Leaf,
-  Building2, Banknote, Wallet, PieChart
+  Building2, Banknote, Wallet, PieChart,
+  FileText
 } from "lucide-react";
 
 export default function HomePage() {
@@ -566,7 +567,7 @@ export default function HomePage() {
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {[
+            {[ 
               { 
                 name: "Sarah Johnson", 
                 role: "CEO, TechRetail Group", 
