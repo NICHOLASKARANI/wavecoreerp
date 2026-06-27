@@ -321,8 +321,10 @@ export default function HomePage() {
                       <div className="text-xl font-bold text-gray-900 dark:text-white">
                         K
                       </div>
-                      <div className={	ext-xs font-medium }>
-                        {metric.change > 0 ? "+" : ""}{metric.change}%
+                      <div className="text-xs font-medium">
+                        <span className={metric.change > 0 ? "text-green-500" : "text-red-500"}>
+                          {metric.change > 0 ? "+" : ""}{metric.change}%
+                        </span>
                       </div>
                     </motion.div>
                   ))}
