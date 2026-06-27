@@ -1,1079 +1,293 @@
-﻿"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { 
-  Menu, X, ChevronRight, Play, Brain, 
-  Shield, Cloud, Globe, Zap, TrendingUp,
-  Users, Building, Store, Truck, Factory, Hotel,
-  School, Hospital, ShoppingBag, Coffee,
-  BarChart3, Package, ShoppingCart, User, 
-  Layers, Code, CheckCircle, Star, Quote, 
-  Linkedin, Twitter, Github, Youtube,
-  Rocket, Sparkles, ArrowRight, Mail,
-  Phone, MapPin, Send, Calendar,
-  ChevronDown, Server, Network, Lock,
-  Award, Briefcase, Heart, Leaf,
-  Building2, Banknote, Wallet, PieChart,
-  FileText, Lightbulb, Target, Globe2,
-  Plane, Train, Bus, Car, Database,
-  Cpu, Activity, RefreshCw, Workflow,
-  LineChart, DollarSign, CircleDollarSign,
-  PieChart as PieChartIcon, Gauge,
-  Timer, RefreshCcw, Share2, ZoomIn
-} from "lucide-react";
-
-import { Area, AreaChart, XAxis, YAxis, Tooltip, ResponsiveContainer, Line, LineChart as RechartsLineChart } from "recharts";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import {
+  ArrowRight, Check, Shield, Zap, Globe, BarChart3, TrendingUp,
+  Users, Building2, Factory, Store, GraduationCap, Heart, Truck,
+  Wheat, Wrench, Landmark, Brain, Cloud, Lock, Smartphone, Download,
+  ChevronRight, Menu, X, Star, Play
+} from 'lucide-react';
 
 export default function HomePage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [hoveredIndustry, setHoveredIndustry] = useState<string | null>(null);
-  const [hoveredModule, setHoveredModule] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<string>("overview");
-  
-  const containerRef = useRef<HTMLDivElement>(null);
-  const heroRef = useRef<HTMLDivElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0.9]);
-  const heroScale = useTransform(scrollYProgress, [0, 0.15], [1, 0.98]);
-  const heroY = useTransform(scrollYProgress, [0, 0.15], [0, -30]);
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {
-    setIsLoaded(true);
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Chart data
-  const revenueData = [
-    { name: "Jan", revenue: 45000, forecast: 48000 },
-    { name: "Feb", revenue: 52000, forecast: 54000 },
-    { name: "Mar", revenue: 48000, forecast: 52000 },
-    { name: "Apr", revenue: 61000, forecast: 60000 },
-    { name: "May", revenue: 58000, forecast: 62000 },
-    { name: "Jun", revenue: 72000, forecast: 70000 },
-    { name: "Jul", revenue: 68000, forecast: 73000 },
-  ];
-
-  const inventoryData = [
-    { name: "Warehouse A", value: 4500 },
-    { name: "Warehouse B", value: 3200 },
-    { name: "Warehouse C", value: 2800 },
-    { name: "Warehouse D", value: 1900 },
-    { name: "Warehouse E", value: 3600 },
-  ];
-
-  const industryData = [
-    { name: "Retail", image: "https://images.unsplash.com/photo-1473186578172-c141b6798cf4?w=400&q=80", count: "12,400+" },
-    { name: "Restaurant", image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&q=80", count: "8,200+" },
-    { name: "Construction", image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&q=80", count: "4,500+" },
-    { name: "Hospital", image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400&q=80", count: "5,200+" },
-    { name: "Schools", image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&q=80", count: "7,800+" },
-    { name: "NGO", image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=400&q=80", count: "2,100+" },
-    { name: "Government", image: "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=400&q=80", count: "1,800+" },
-    { name: "Hotels", image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=80", count: "6,400+" },
-    { name: "Manufacturing", image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=400&q=80", count: "9,100+" },
-    { name: "Distribution", image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&q=80", count: "6,300+" },
-    { name: "Agriculture", image: "https://images.unsplash.com/photo-1625246333195-09d9b630f4f9?w=400&q=80", count: "3,200+" },
-  ];
-
   const modules = [
-    { name: "ERP Core", icon: Database, color: "#2563EB", desc: "Complete enterprise resource planning" },
-    { name: "CRM", icon: User, color: "#8B5CF6", desc: "AI-driven customer relationships" },
-    { name: "Accounting", icon: BarChart3, color: "#F59E0B", desc: "Automated financial operations" },
-    { name: "HRM", icon: Users, color: "#22C55E", desc: "Human resource management" },
-    { name: "Payroll", icon: Banknote, color: "#EC4899", desc: "Smart employee compensation" },
-    { name: "Inventory", icon: Package, color: "#06B6D4", desc: "Real-time stock tracking" },
-    { name: "POS", icon: ShoppingCart, color: "#F87171", desc: "Omnichannel point of sale" },
-    { name: "Manufacturing", icon: Factory, color: "#F472B6", desc: "Production planning" },
-    { name: "Assets", icon: Layers, color: "#34D399", desc: "Asset management" },
-    { name: "AI Copilot", icon: Brain, color: "#6366F1", desc: "AI-powered business assistant" },
+    { name: 'Inventory', desc: 'Real-time stock tracking, batch expiry, multi-warehouse transfers, barcode scanning.' },
+    { name: 'POS', desc: 'Retail, restaurant, pharmacy POS. M-Pesa, card, cash. Offline mode.' },
+    { name: 'Accounting', desc: 'Double-entry ledger, invoicing, expenses, bank reconciliation, financial statements.' },
+    { name: 'Payroll', desc: 'Employee payroll, PAYE, NSSF, NHIF, payslips, direct deposits.' },
+    { name: 'CRM', desc: 'Customer database, leads, pipelines, loyalty programs, marketing campaigns.' },
+    { name: 'HRM', desc: 'Employee records, attendance, leave management, performance reviews.' },
+    { name: 'Procurement', desc: 'Supplier management, purchase orders, goods received notes, vendor payments.' },
+    { name: 'Manufacturing', desc: 'Bill of materials, work orders, production planning, quality control.' },
   ];
 
-  // Floating metrics
-  const metrics = [
-    { label: "Revenue", value: "$1.24M", change: "+12.5%", icon: DollarSign },
-    { label: "Orders", value: "8,450", change: "+8.2%", icon: ShoppingCart },
-    { label: "Inventory", value: "23,400", change: "-3.1%", icon: Package },
-    { label: "Profit", value: "$489K", change: "+15.8%", icon: TrendingUp },
+  const industries = [
+    { name: 'Retail', icon: Store },
+    { name: 'Manufacturing', icon: Factory },
+    { name: 'Healthcare', icon: Heart },
+    { name: 'Education', icon: GraduationCap },
+    { name: 'Construction', icon: Wrench },
+    { name: 'Agriculture', icon: Wheat },
+    { name: 'Logistics', icon: Truck },
+    { name: 'Finance', icon: Landmark },
+    { name: 'Hospitality', icon: Building2 },
+    { name: 'Government', icon: Globe },
+  ];
+
+  const features = [
+    { icon: Brain, title: 'AI-Powered', desc: 'Intelligent automation across every module' },
+    { icon: Cloud, title: 'Cloud Native', desc: 'Access from anywhere, any device, anytime' },
+    { icon: Shield, title: 'Enterprise Security', desc: 'SOC 2 compliant, encrypted, audited' },
+    { icon: Zap, title: 'Real-Time Analytics', desc: 'Live dashboards with actionable insights' },
+    { icon: Smartphone, title: 'Mobile Ready', desc: 'Full functionality on phone and tablet' },
+    { icon: Globe, title: 'Multi-Currency', desc: 'Support for 200+ world currencies' },
   ];
 
   return (
-    <div ref={containerRef} className="bg-[#FFFFFF] min-h-screen overflow-x-hidden selection:bg-[#2563EB]/20 font-sans antialiased">
-      
-      {/* ============================================================ */}
-      {/* GLOBAL NAVIGATION */}
-      {/* ============================================================ */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100/50">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={isLoaded ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="flex items-center gap-3 cursor-pointer group"
-            >
-              <div className="w-10 h-10 bg-gradient-to-br from-[#2563EB] to-[#0F172A] rounded-xl flex items-center justify-center group-hover:shadow-lg transition-all">
-                <Brain className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <span className="text-xl font-bold text-[#0F172A] tracking-tight">
-                  WaveCore
-                </span>
-                <span className="text-[10px] font-medium text-[#2563EB] block -mt-0.5 tracking-wider uppercase">
-                  AI Enterprise Platform
-                </span>
-              </div>
-            </motion.div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-8">
-              <div className="flex items-center gap-6 text-sm font-medium text-[#0F172A]/70 hover:text-[#0F172A] transition-colors">
-                <a href="#" className="hover:text-[#2563EB] transition-colors">Products</a>
-                <a href="#" className="hover:text-[#2563EB] transition-colors">Solutions</a>
-                <a href="#" className="hover:text-[#2563EB] transition-colors">Industries</a>
-                <a href="#" className="hover:text-[#2563EB] transition-colors">AI</a>
-                <a href="#" className="hover:text-[#2563EB] transition-colors">Pricing</a>
-                <a href="#" className="hover:text-[#2563EB] transition-colors">Partners</a>
-                <a href="#" className="hover:text-[#2563EB] transition-colors">Developers</a>
-                <a href="#" className="hover:text-[#2563EB] transition-colors">Resources</a>
-              </div>
-              <div className="flex items-center gap-4">
-                <button className="text-sm font-medium text-[#0F172A]/70 hover:text-[#2563EB] transition-colors">Login</button>
-                <motion.button 
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="px-5 py-2.5 bg-[#2563EB] text-white rounded-lg text-sm font-medium hover:bg-[#1D4ED8] transition-all shadow-sm hover:shadow-md"
-                >
-                  Start Free Trial
-                </motion.button>
-              </div>
+    <div className="min-h-screen bg-white text-gray-900">
+      {/* ===== NAVIGATION ===== */}
+      <header className={`fixed top-0 w-full z-50 transition-all ${scrolled ? 'bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm' : 'bg-transparent'}`}>
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="h-9 w-9 rounded-lg bg-blue-600 flex items-center justify-center">
+              <span className="text-white font-bold text-base">W</span>
             </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-2 rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              {isMenuOpen ? <X className="w-6 h-6 text-[#0F172A]" /> : <Menu className="w-6 h-6 text-[#0F172A]" />}
+            <span className="text-xl font-bold text-gray-900">WaveCore<span className="text-blue-600">ERP</span></span>
+          </Link>
+          <nav className="hidden lg:flex items-center gap-8 text-sm font-medium text-gray-600">
+            <a href="#modules" className="hover:text-blue-600 transition">Modules</a>
+            <a href="#industries" className="hover:text-blue-600 transition">Industries</a>
+            <a href="#features" className="hover:text-blue-600 transition">Why WaveCore</a>
+            <a href="#pricing" className="hover:text-blue-600 transition">Pricing</a>
+          </nav>
+          <div className="flex items-center gap-3">
+            <Link href="/login" className="hidden sm:inline text-sm font-medium text-gray-600 hover:text-blue-600 transition">Sign in</Link>
+            <Link href="/register" className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 transition shadow-sm">Get Started</Link>
+            <button className="lg:hidden p-2" onClick={() => setMobileMenu(!mobileMenu)}>
+              {mobileMenu ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-b border-gray-100"
-          >
-            <div className="px-6 py-4 space-y-3">
-              <a href="#" className="block text-sm font-medium text-[#0F172A]/70 hover:text-[#2563EB]">Products</a>
-              <a href="#" className="block text-sm font-medium text-[#0F172A]/70 hover:text-[#2563EB]">Solutions</a>
-              <a href="#" className="block text-sm font-medium text-[#0F172A]/70 hover:text-[#2563EB]">Industries</a>
-              <a href="#" className="block text-sm font-medium text-[#0F172A]/70 hover:text-[#2563EB]">AI</a>
-              <a href="#" className="block text-sm font-medium text-[#0F172A]/70 hover:text-[#2563EB]">Pricing</a>
-              <a href="#" className="block text-sm font-medium text-[#0F172A]/70 hover:text-[#2563EB]">Partners</a>
-              <a href="#" className="block text-sm font-medium text-[#0F172A]/70 hover:text-[#2563EB]">Developers</a>
-              <a href="#" className="block text-sm font-medium text-[#0F172A]/70 hover:text-[#2563EB]">Resources</a>
-              <div className="pt-4 border-t border-gray-100 flex flex-col gap-3">
-                <button className="text-sm font-medium text-[#0F172A]/70 hover:text-[#2563EB]">Login</button>
-                <button className="px-5 py-2.5 bg-[#2563EB] text-white rounded-lg text-sm font-medium hover:bg-[#1D4ED8]">
-                  Start Free Trial
-                </button>
-              </div>
-            </div>
-          </motion.div>
+        {mobileMenu && (
+          <div className="lg:hidden bg-white border-b px-6 py-4 space-y-3">
+            <a href="#modules" className="block text-sm font-medium">Modules</a>
+            <a href="#industries" className="block text-sm font-medium">Industries</a>
+            <a href="#features" className="block text-sm font-medium">Why WaveCore</a>
+            <a href="#pricing" className="block text-sm font-medium">Pricing</a>
+            <Link href="/login" className="block text-sm font-medium">Sign in</Link>
+          </div>
         )}
-      </nav>
+      </header>
 
-      {/* ============================================================ */}
-      {/* FULL SCREEN HERO */}
-      {/* ============================================================ */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center pt-16 overflow-hidden bg-[#FFFFFF]">
-        {/* Cinematic Enterprise Background */}
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80')] bg-cover bg-center opacity-8" />
-          <div className="absolute inset-0 bg-gradient-to-br from-[#2563EB]/5 via-transparent to-[#0F172A]/5" />
-          
-          {/* Neural Network Particles */}
-          <div className="absolute inset-0 overflow-hidden">
-            {Array.from({ length: 100 }).map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-1 h-1 bg-[#2563EB]/20 rounded-full"
-                animate={{
-                  x: [0, Math.random() * 1200 - 600],
-                  y: [0, Math.random() * 1200 - 600],
-                  scale: [1, 1.5, 1],
-                  opacity: [0.2, 0.6, 0.2],
-                }}
-                transition={{
-                  duration: Math.random() * 40 + 20,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                }}
-              />
-            ))}
+      {/* ===== HERO ===== */}
+      <section className="pt-28 pb-16 px-6 bg-gradient-to-b from-blue-50 to-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-4 py-1.5 text-sm font-medium text-blue-700 mb-8">
+            <Zap className="h-4 w-4" /> AI-Powered Enterprise Platform
           </div>
-
-          {/* Glowing Network Lines */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none">
-            <defs>
-              <linearGradient id="lineGradient">
-                <stop offset="0%" stopColor="#2563EB" stopOpacity="0.08" />
-                <stop offset="100%" stopColor="#0F172A" stopOpacity="0.08" />
-              </linearGradient>
-            </defs>
-            {Array.from({ length: 20 }).map((_, i) => (
-              <motion.line
-                key={i}
-                x1={Math.random() * 100 + "%"}
-                y1={Math.random() * 100 + "%"}
-                x2={Math.random() * 100 + "%"}
-                y2={Math.random() * 100 + "%"}
-                stroke="url(#lineGradient)"
-                strokeWidth="0.5"
-                animate={{
-                  opacity: [0.1, 0.3, 0.1],
-                }}
-                transition={{
-                  duration: Math.random() * 6 + 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-            ))}
-          </svg>
-
-          {/* Glowing Orbs */}
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#2563EB]/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-[#0F172A]/5 rounded-full blur-3xl" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#2563EB]/5 rounded-full blur-3xl" />
+          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight tracking-tight">
+            Run your entire business<br />from one intelligent platform
+          </h1>
+          <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            WaveCore ERP combines inventory, POS, accounting, CRM, HR, payroll, procurement, 
+            and manufacturing into a single AI-powered system. KES 1,000/month.
+          </p>
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link href="/register" className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-8 py-3.5 text-base font-semibold text-white hover:bg-blue-700 transition shadow-lg shadow-blue-200">
+              Start Free Trial <ArrowRight className="h-5 w-5" />
+            </Link>
+            <button className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-8 py-3.5 text-base font-semibold text-gray-700 hover:bg-gray-50 transition">
+              <Play className="h-5 w-5" /> Watch Demo
+            </button>
+          </div>
+          <div className="mt-6 flex items-center justify-center gap-6 text-sm text-gray-500">
+            <span className="flex items-center gap-1"><Check className="h-4 w-4 text-green-500" /> 14-day free trial</span>
+            <span className="flex items-center gap-1"><Check className="h-4 w-4 text-green-500" /> No credit card</span>
+            <span className="flex items-center gap-1"><Check className="h-4 w-4 text-green-500" /> M-Pesa Till 4760783</span>
+          </div>
         </div>
+      </section>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-20 w-full">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Left Content */}
-            <motion.div
-              style={{ opacity: heroOpacity, scale: heroScale, y: heroY }}
-              initial={{ opacity: 0, x: -40 }}
-              animate={isLoaded ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <motion.div 
-                initial={{ opacity: 0, y: 15 }}
-                animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="flex items-center gap-3 mb-8"
-              >
-                <span className="px-4 py-1.5 bg-[#2563EB]/10 text-[#2563EB] text-xs font-semibold rounded-full flex items-center gap-1">
-                  <Sparkles className="w-3 h-3" /> AI-Powered Enterprise Platform
-                </span>
-                <span className="px-4 py-1.5 bg-[#0F172A]/5 text-[#0F172A]/70 text-xs font-semibold rounded-full">
-                  Trusted by 10,000+ Businesses
-                </span>
-              </motion.div>
-              
-              <motion.h1 
-                initial={{ opacity: 0, y: 15 }}
-                animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.7, delay: 0.2 }}
-                className="text-5xl sm:text-6xl lg:text-7xl font-bold text-[#0F172A] leading-tight tracking-tight mb-6"
-              >
-                Run Your Entire Business
-                <span className="block text-gradient mt-2">From One Intelligent Platform</span>
-              </motion.h1>
-              
-              <motion.p 
-                initial={{ opacity: 0, y: 15 }}
-                animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.7, delay: 0.3 }}
-                className="text-lg text-[#0F172A]/70 mb-8 max-w-md leading-relaxed"
-              >
-                The AI Operating System for Modern Businesses. Unify ERP, CRM, Accounting, HRM, Inventory, POS, Manufacturing, and AI Analytics into one cloud platform.
-              </motion.p>
-              
-              <motion.div 
-                initial={{ opacity: 0, y: 15 }}
-                animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.7, delay: 0.4 }}
-                className="flex flex-wrap gap-4"
-              >
-                <motion.button 
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="px-8 py-3.5 bg-[#2563EB] text-white rounded-lg text-sm font-medium hover:bg-[#1D4ED8] transition-all shadow-sm hover:shadow-md flex items-center gap-2"
-                >
-                  Start Free Trial <ArrowRight className="w-4 h-4" />
-                </motion.button>
-                <motion.button 
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="px-8 py-3.5 border border-gray-200 text-[#0F172A]/70 rounded-lg text-sm font-medium hover:border-[#2563EB] hover:text-[#2563EB] transition-all flex items-center gap-2"
-                >
-                  <Play className="w-4 h-4" /> Book Demo
-                </motion.button>
-                <motion.button 
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="px-8 py-3.5 border border-gray-200 text-[#0F172A]/70 rounded-lg text-sm font-medium hover:border-[#2563EB] hover:text-[#2563EB] transition-all flex items-center gap-2"
-                >
-                  <Globe className="w-4 h-4" /> Watch Live Tour
-                </motion.button>
-              </motion.div>
-            </motion.div>
+      {/* ===== MODULES ===== */}
+      <section id="modules" className="py-20 px-6 max-w-6xl mx-auto">
+        <div className="text-center mb-14">
+          <h2 className="text-3xl font-bold text-gray-900 mb-3">Complete ERP Modules</h2>
+          <p className="text-gray-500 max-w-xl mx-auto">Every tool you need to run your business — included in one subscription.</p>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {modules.map(m => (
+            <div key={m.name} className="group rounded-xl border border-gray-200 p-6 hover:border-blue-300 hover:shadow-md transition-all cursor-default">
+              <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">{m.name}</h3>
+              <p className="text-sm text-gray-500 leading-relaxed">{m.desc}</p>
+            </div>
+          ))}
+        </div>
+        <div className="text-center mt-8">
+          <p className="text-sm text-gray-400">+10 more modules including Assets, Fleet, Projects, Compliance, Tax, Reports, and AI Copilot</p>
+        </div>
+      </section>
 
-            {/* Right - Animated World Map + Enterprise Dashboard */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={isLoaded ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-              className="relative hidden lg:block"
-            >
-              <div className="relative bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-100 p-6 overflow-hidden">
-                {/* Glass reflection */}
-                <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-white/50 to-transparent pointer-events-none" />
-                
-                {/* Enterprise Dashboard Header */}
-                <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
-                  <div className="flex items-center gap-3">
-                    <div className="w-3 h-3 rounded-full bg-green-500" />
-                    <span className="text-xs font-medium text-[#0F172A]/60">Live System — Enterprise ERP</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-[#0F172A]/40">
-                    <Activity className="w-3 h-3" />
-                    <span>AI Copilot Active</span>
-                  </div>
-                </div>
-
-                {/* Floating ERP Windows */}
-                <div className="relative grid grid-cols-2 gap-3 mb-4">
-                  {[
-                    { label: "Inventory", icon: Package, color: "#2563EB", value: "23,400 items" },
-                    { label: "Accounting", icon: BarChart3, color: "#F59E0B", value: "$1.24M revenue" },
-                    { label: "CRM", icon: User, color: "#8B5CF6", value: "12,450 leads" },
-                    { label: "Payroll", icon: Banknote, color: "#22C55E", value: "850 employees" },
-                  ].map((item, index) => (
-                    <motion.div
-                      key={item.label}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-                      transition={{ duration: 0.5, delay: 0.4 + index * 0.08 }}
-                      whileHover={{ y: -2 }}
-                      className="p-3 bg-[#F8FAFC] rounded-lg border border-gray-100 hover:shadow-md transition-all"
-                    >
-                      <div className="flex items-center gap-2 mb-1">
-                        <item.icon className="w-3 h-3" style={{ color: item.color }} />
-                        <span className="text-xs text-[#0F172A]/50">{item.label}</span>
-                      </div>
-                      <div className="text-sm font-bold text-[#0F172A]">{item.value}</div>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* Animated Chart */}
-                <div className="h-32 bg-[#F8FAFC] rounded-lg border border-gray-100 p-2">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={revenueData}>
-                      <XAxis dataKey="name" stroke="#9CA3AF" fontSize={8} />
-                      <YAxis stroke="#9CA3AF" fontSize={8} />
-                      <Tooltip />
-                      <Area type="monotone" dataKey="revenue" stroke="#2563EB" fill="#2563EB" fillOpacity={0.1} strokeWidth={2} />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-
-                {/* AI Assistant Floating Window */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.8 }}
-                  className="mt-3 p-3 bg-gradient-to-r from-[#2563EB]/5 to-[#0F172A]/5 rounded-lg border border-[#2563EB]/10 flex items-start gap-3"
-                >
-                  <div className="w-6 h-6 bg-[#2563EB] rounded-full flex items-center justify-center flex-shrink-0">
-                    <Brain className="w-3 h-3 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-medium text-[#0F172A]">AI Assistant</p>
-                    <p className="text-[10px] text-[#0F172A]/60">Revenue forecast: +12.5% this quarter</p>
-                  </div>
-                </motion.div>
-
-                {/* Floating UI Elements */}
-                <motion.div
-                  className="absolute -top-3 -right-3 w-16 h-16 bg-[#2563EB]/10 rounded-full blur-2xl"
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [0.3, 0.6, 0.3],
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
-                <motion.div
-                  className="absolute -bottom-3 -left-3 w-16 h-16 bg-[#0F172A]/10 rounded-full blur-2xl"
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [0.3, 0.6, 0.3],
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 2,
-                  }}
-                />
+      {/* ===== INDUSTRIES ===== */}
+      <section id="industries" className="py-20 px-6 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">Built for Every Industry</h2>
+            <p className="text-gray-500 max-w-xl mx-auto">From retail shops to manufacturing plants, WaveCore adapts to your business.</p>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+            {industries.map(ind => (
+              <div key={ind.name} className="bg-white rounded-xl border border-gray-200 p-5 text-center hover:shadow-md transition-all cursor-default">
+                <ind.icon className="h-8 w-8 text-blue-600 mx-auto mb-2" />
+                <p className="text-sm font-medium text-gray-900">{ind.name}</p>
               </div>
-            </motion.div>
-          </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-xs text-[#0F172A]/40">Scroll to explore</span>
-            <ChevronDown className="w-5 h-5 text-[#0F172A]/40" />
-          </div>
-        </motion.div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* TRUSTED BY BUSINESSES */}
-      {/* ============================================================ */}
-      <section className="py-12 bg-[#F8FAFC] border-y border-gray-100">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-center mb-8"
-          >
-            <p className="text-sm font-medium text-[#0F172A]/40 uppercase tracking-wider">
-              Trusted by 10,000+ businesses worldwide
-            </p>
-          </motion.div>
-          <div className="flex flex-wrap justify-center gap-8 md:gap-12 opacity-60">
-            {["Retail", "Manufacturing", "Healthcare", "Finance", "Logistics", "Education", "Government", "Technology"].map((industry, i) => (
-              <motion.div
-                key={industry}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="text-base font-semibold text-[#0F172A]/40 hover:text-[#0F172A]/60 transition-colors"
-              >
-                {industry}
-              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ============================================================ */}
-      {/* ENTERPRISE MODULES */}
-      {/* ============================================================ */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">
-              Enterprise-Grade Modules
-            </h2>
-            <p className="text-[#0F172A]/60 max-w-2xl mx-auto text-lg">
-              Every business function unified in one intelligent platform powered by AI.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {modules.map((module, index) => (
-              <motion.div
-                key={module.name}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.04 }}
-                whileHover={{ y: -4 }}
-                onHoverStart={() => setHoveredModule(module.name)}
-                onHoverEnd={() => setHoveredModule(null)}
-                className="p-5 bg-[#F8FAFC] rounded-xl border border-gray-100 hover:border-[#2563EB]/30 hover:shadow-lg transition-all cursor-pointer group"
-              >
-                <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center mb-3 shadow-sm group-hover:shadow-md transition-all" style={{ color: module.color }}>
-                  <module.icon className="w-5 h-5" />
-                </div>
-                <h3 className="text-sm font-semibold text-[#0F172A]">{module.name}</h3>
-                <p className="text-xs text-[#0F172A]/50 mt-1">{module.desc}</p>
-                {hoveredModule === module.name && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="absolute -bottom-1 -right-1 w-6 h-6 bg-[#2563EB]/10 rounded-full"
-                  />
-                )}
-              </motion.div>
-            ))}
-          </div>
+      {/* ===== WHY WAVECORE ===== */}
+      <section id="features" className="py-20 px-6 max-w-6xl mx-auto">
+        <div className="text-center mb-14">
+          <h2 className="text-3xl font-bold text-gray-900 mb-3">Why businesses choose WaveCore</h2>
+          <p className="text-gray-500 max-w-xl mx-auto">Enterprise-grade features at a fraction of the cost.</p>
         </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* LIVE DASHBOARD */}
-      {/* ============================================================ */}
-      <section className="py-24 bg-[#F8FAFC]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">
-              See WaveCore in Action
-            </h2>
-            <p className="text-[#0F172A]/60 max-w-2xl mx-auto text-lg">
-              Real-time ERP dashboard showing live data, AI insights, and business intelligence.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="relative rounded-2xl overflow-hidden shadow-2xl border border-gray-100 bg-white p-8"
-          >
-            {/* Glass reflection */}
-            <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white/50 to-transparent pointer-events-none" />
-            
-            {/* Dashboard Header */}
-            <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-100">
-              <div className="flex items-center gap-4">
-                <div className="w-3 h-3 rounded-full bg-green-500" />
-                <span className="text-sm font-medium text-[#0F172A]/60">Live System — WaveCore ERP</span>
+        <div className="grid md:grid-cols-3 gap-6">
+          {features.map(f => (
+            <div key={f.title} className="flex items-start gap-4 p-5 rounded-xl hover:bg-gray-50 transition-colors">
+              <div className="flex-shrink-0 h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                <f.icon className="h-5 w-5 text-blue-600" />
               </div>
-              <div className="flex items-center gap-4 text-xs text-[#0F172A]/40">
-                <Activity className="w-4 h-4" />
-                <span>AI Copilot Active</span>
-                <span className="w-px h-4 bg-gray-200" />
-                <span>12,450 users online</span>
+              <div>
+                <h3 className="font-semibold text-gray-900">{f.title}</h3>
+                <p className="text-sm text-gray-500 mt-0.5">{f.desc}</p>
               </div>
             </div>
+          ))}
+        </div>
+      </section>
 
-            {/* Dashboard Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              {metrics.map((metric, index) => (
-                <motion.div
-                  key={metric.label}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.05 }}
-                  whileHover={{ y: -2 }}
-                  className="p-4 bg-[#F8FAFC] rounded-xl border border-gray-100 hover:shadow-md transition-all"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs text-[#0F172A]/50">{metric.label}</span>
-                    <metric.icon className="w-4 h-4 text-[#2563EB]" />
-                  </div>
-                  <div className="text-2xl font-bold text-[#0F172A]">{metric.value}</div>
-                  <div className="text-xs text-green-500">{metric.change}</div>
-                </motion.div>
+      {/* ===== PRICING ===== */}
+      <section id="pricing" className="py-20 px-6 bg-gray-50">
+        <div className="max-w-lg mx-auto text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-3">Simple, transparent pricing</h2>
+          <p className="text-gray-500 mb-12">One plan. All modules included. No hidden costs.</p>
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-xl shadow-gray-100 p-10">
+            <div className="h-10 w-10 rounded-lg bg-blue-600 flex items-center justify-center mx-auto mb-4">
+              <span className="text-white font-bold">W</span>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900">WaveCore ERP</h3>
+            <p className="text-gray-500 text-sm mt-1">Complete business platform</p>
+            <div className="my-6">
+              <span className="text-6xl font-bold text-gray-900">KES 1,000</span>
+              <span className="text-gray-400 text-lg">/month</span>
+            </div>
+            <ul className="space-y-2.5 text-left mb-8">
+              {[
+                'All ERP modules included',
+                'Unlimited users',
+                'AI Copilot',
+                'Mobile apps',
+                'M-Pesa payments',
+                'Email & chat support',
+                'Automatic updates',
+                '14-day free trial',
+              ].map(f => (
+                <li key={f} className="flex items-center gap-2.5 text-sm text-gray-600">
+                  <Check className="h-4 w-4 text-green-500 flex-shrink-0" /> {f}
+                </li>
               ))}
-            </div>
-
-            {/* Charts Row */}
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="p-4 bg-[#F8FAFC] rounded-xl border border-gray-100"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-sm font-medium text-[#0F172A]">Revenue & Forecast</span>
-                  <TrendingUp className="w-4 h-4 text-[#2563EB]" />
-                </div>
-                <div className="h-40">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={revenueData}>
-                      <XAxis dataKey="name" stroke="#9CA3AF" fontSize={8} />
-                      <YAxis stroke="#9CA3AF" fontSize={8} />
-                      <Tooltip />
-                      <Area type="monotone" dataKey="revenue" stroke="#2563EB" fill="#2563EB" fillOpacity={0.1} strokeWidth={2} />
-                      <Area type="monotone" dataKey="forecast" stroke="#8B5CF6" fill="#8B5CF6" fillOpacity={0.05} strokeWidth={2} strokeDasharray="3 3" />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="p-4 bg-[#F8FAFC] rounded-xl border border-gray-100"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-sm font-medium text-[#0F172A]">Inventory by Warehouse</span>
-                  <Package className="w-4 h-4 text-[#2563EB]" />
-                </div>
-                <div className="h-40 flex items-end justify-around gap-2">
-                  {inventoryData.map((item, index) => (
-                    <motion.div
-                      key={item.name}
-                      initial={{ height: 0 }}
-                      whileInView={{ height: "auto" }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.05 }}
-                      className="flex flex-col items-center gap-1"
-                    >
-                      <motion.div
-                        initial={{ height: 0 }}
-                        whileInView={{ height: (item.value / 4500) * 120 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.05 + 0.2 }}
-                        className="w-8 bg-[#2563EB] rounded-t-md"
-                      />
-                      <span className="text-[10px] text-[#0F172A]/60">{item.name.split(" ")[1]}</span>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            </div>
-
-            {/* AI Copilot Widget */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="p-4 bg-gradient-to-r from-[#2563EB]/5 to-[#0F172A]/5 rounded-xl border border-[#2563EB]/10"
-            >
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 bg-[#2563EB] rounded-lg flex items-center justify-center">
-                  <Brain className="w-4 h-4 text-white" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-[#0F172A]">AI Copilot</span>
-                    <span className="text-xs text-green-500 flex items-center gap-1">
-                      <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                      Active
-                    </span>
-                  </div>
-                  <p className="text-sm text-[#0F172A]/70">
-                    Revenue forecast for next quarter shows 12.5% growth. Recommend increasing inventory for top 3 products.
-                  </p>
-                  <div className="mt-3 flex gap-2">
-                    <span className="text-xs px-2 py-1 bg-[#2563EB]/10 text-[#2563EB] rounded-full">Forecast</span>
-                    <span className="text-xs px-2 py-1 bg-[#0F172A]/5 text-[#0F172A]/60 rounded-full">Inventory</span>
-                    <span className="text-xs px-2 py-1 bg-[#0F172A]/5 text-[#0F172A]/60 rounded-full">Revenue</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Floating glass decoration */}
-            <motion.div
-              className="absolute -top-4 -right-4 w-24 h-24 bg-[#2563EB]/10 rounded-full blur-3xl"
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.3, 0.6, 0.3],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-            <motion.div
-              className="absolute -bottom-4 -left-4 w-24 h-24 bg-[#0F172A]/10 rounded-full blur-3xl"
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.3, 0.6, 0.3],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 2,
-              }}
-            />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* AI COPILOT */}
-      {/* ============================================================ */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="order-2 lg:order-1"
-            >
-              <div className="relative rounded-2xl overflow-hidden shadow-xl border border-gray-100">
-                <img 
-                  src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" 
-                  alt="AI Technology" 
-                  className="w-full h-auto"
-                />
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white/80 to-transparent p-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-[#2563EB] rounded-lg flex items-center justify-center">
-                      <Brain className="w-4 h-4 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-[#0F172A]">AI Copilot Active</p>
-                      <p className="text-xs text-[#0F172A]/50">Processing 1.2M records</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="order-1 lg:order-2"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-[#2563EB] rounded-lg flex items-center justify-center">
-                  <Brain className="w-4 h-4 text-white" />
-                </div>
-                <span className="text-sm font-semibold text-[#2563EB]">AI Copilot</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">
-                Your Intelligent Business Assistant
-              </h2>
-              <p className="text-[#0F172A]/60 mb-6 text-lg leading-relaxed">
-                Let AI handle the heavy lifting. From forecasting demand to detecting fraud, WaveCore's Copilot gives you instant answers and actionable insights.
-              </p>
-              <div className="space-y-3">
-                {[
-                  "Forecast sales with 95% accuracy",
-                  "Detect fraud patterns in real-time",
-                  "Generate comprehensive reports in seconds",
-                  "Optimize reorder points automatically",
-                  "Predict cash flow trends with precision",
-                  "Voice commands and natural language queries"
-                ].map((item, i) => (
-                  <motion.div
-                    key={item}
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.05 }}
-                    className="flex items-center gap-3 text-sm text-[#0F172A]/70"
-                  >
-                    <div className="w-4 h-4 rounded-full bg-[#2563EB]/20 flex items-center justify-center flex-shrink-0">
-                      <CheckCircle className="w-3 h-3 text-[#2563EB]" />
-                    </div>
-                    {item}
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
+            </ul>
+            <Link href="/register" className="block w-full rounded-lg bg-blue-600 py-3.5 text-base font-semibold text-white hover:bg-blue-700 transition shadow-sm">
+              Start Free Trial
+            </Link>
+            <p className="mt-4 text-xs text-gray-400">Pay via M-Pesa Till <strong className="text-gray-600">4760783</strong></p>
           </div>
         </div>
       </section>
 
-      {/* ============================================================ */}
-      {/* BUSINESS INTELLIGENCE */}
-      {/* ============================================================ */}
-      <section className="py-24 bg-[#F8FAFC]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="order-2 lg:order-1"
-            >
-              <div className="relative rounded-2xl overflow-hidden shadow-xl border border-gray-100">
-                <img 
-                  src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" 
-                  alt="Business Intelligence" 
-                  className="w-full h-auto"
-                />
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white/80 to-transparent p-6">
-                  <div className="flex gap-6">
-                    <div>
-                      <div className="text-2xl font-bold text-[#0F172A]">12.5%</div>
-                      <div className="text-xs text-[#0F172A]/50">Revenue Growth</div>
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold text-[#0F172A]">94%</div>
-                      <div className="text-xs text-[#0F172A]/50">Accuracy Rate</div>
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold text-[#0F172A]">99.9%</div>
-                      <div className="text-xs text-[#0F172A]/50">Uptime</div>
-                    </div>
-                  </div>
-                </div>
+      {/* ===== SECURITY ===== */}
+      <section className="py-16 px-6 bg-gray-900 text-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <Shield className="h-10 w-10 text-green-400 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold mb-2">Enterprise-Grade Security</h2>
+          <p className="text-gray-400 max-w-xl mx-auto mb-8">
+            Your data is protected with bank-level encryption, SOC 2 compliance, and regular security audits.
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            {['256-bit Encryption', 'SOC 2 Compliant', 'RBAC & MFA', 'Audit Logs', 'Automated Backups', '99.99% Uptime SLA', 'GDPR Ready', 'ISO 27001'].map(s => (
+              <div key={s} className="flex items-center gap-2 justify-center text-gray-300">
+                <Lock className="h-4 w-4 text-green-400" /> {s}
               </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="order-1 lg:order-2"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-[#2563EB] rounded-lg flex items-center justify-center">
-                  <BarChart3 className="w-4 h-4 text-white" />
-                </div>
-                <span className="text-sm font-semibold text-[#2563EB]">Business Intelligence</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">
-                Data-Driven Decisions
-              </h2>
-              <p className="text-[#0F172A]/60 mb-6 text-lg leading-relaxed">
-                Real-time dashboards, predictive analytics, and AI-powered insights that help you stay ahead of the market and make confident decisions.
-              </p>
-              <div className="space-y-3">
-                {[
-                  "Real-time dashboards and KPIs",
-                  "Predictive analytics and forecasting",
-                  "Automated reporting and insights",
-                  "AI-powered recommendations",
-                  "Customizable data views",
-                  "Interactive maps and heatmaps"
-                ].map((item, i) => (
-                  <motion.div
-                    key={item}
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.05 }}
-                    className="flex items-center gap-3 text-sm text-[#0F172A]/70"
-                  >
-                    <div className="w-4 h-4 rounded-full bg-[#2563EB]/20 flex items-center justify-center flex-shrink-0">
-                      <CheckCircle className="w-3 h-3 text-[#2563EB]" />
-                    </div>
-                    {item}
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* INDUSTRIES */}
-      {/* ============================================================ */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">
-              Built for Every Industry
-            </h2>
-            <p className="text-[#0F172A]/60 max-w-2xl mx-auto text-lg">
-              Tailored solutions for every sector — from retail to manufacturing, healthcare to logistics.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {industryData.map((industry, index) => (
-              <motion.div
-                key={industry.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.03 }}
-                whileHover={{ y: -4 }}
-                className="relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-lg transition-all group"
-              >
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img 
-                    src={industry.image} 
-                    alt={industry.name} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/80 via-[#0F172A]/40 to-transparent" />
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-white">{industry.name}</h3>
-                    <span className="text-xs text-white/70">{industry.count}</span>
-                  </div>
-                </div>
-              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ============================================================ */}
-      {/* CUSTOMER STORIES */}
-      {/* ============================================================ */}
-      <section className="py-24 bg-[#F8FAFC]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">
-              What Our Customers Say
-            </h2>
-            <p className="text-[#0F172A]/60 max-w-2xl mx-auto text-lg">
-              See how businesses are transforming with WaveCore.
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[ 
-              { 
-                name: "Sarah Johnson", 
-                role: "CEO, TechRetail Group", 
-                image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80", 
-                quote: "WaveCore unified our entire operation. Efficiency increased by 47% in just 3 months." 
-              },
-              { 
-                name: "Michael Chen", 
-                role: "Finance Director, GlobalMfg", 
-                image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80", 
-                quote: "AI insights revolutionized our decision-making. We're seeing results we never thought possible." 
-              },
-              { 
-                name: "Emily Rodriguez", 
-                role: "Operations Manager, CityHealth", 
-                image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80", 
-                quote: "One platform for patient care, inventory, and scheduling. It's transformed how we work." 
-              },
-            ].map((testimonial, index) => (
-              <motion.div
-                key={testimonial.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ y: -4 }}
-                className="p-8 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <img src={testimonial.image} alt={testimonial.name} className="w-12 h-12 rounded-full object-cover" />
-                  <div>
-                    <h4 className="font-semibold text-[#0F172A]">{testimonial.name}</h4>
-                    <p className="text-xs text-[#0F172A]/50">{testimonial.role}</p>
-                  </div>
-                </div>
-                <Quote className="w-5 h-5 text-[#2563EB]/30 mb-3" />
-                <p className="text-[#0F172A]/70 leading-relaxed">"{testimonial.quote}"</p>
-                <div className="flex gap-1 mt-4">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-[#2563EB] text-[#2563EB]" />
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+      {/* ===== CTA ===== */}
+      <section className="py-20 px-6 bg-blue-600 text-white text-center">
+        <h2 className="text-3xl font-bold mb-3">Ready to transform your business?</h2>
+        <p className="text-blue-100 mb-8 max-w-md mx-auto">Start your 14-day free trial. No credit card required.</p>
+        <Link href="/register" className="inline-flex items-center gap-2 rounded-lg bg-white px-8 py-3.5 text-base font-semibold text-blue-600 hover:bg-blue-50 transition shadow-lg">
+          Get Started Free <ArrowRight className="h-5 w-5" />
+        </Link>
+        <p className="mt-4 text-sm text-blue-200">KES 1,000/month after trial · M-Pesa Till 4760783</p>
       </section>
 
-      {/* ============================================================ */}
-      {/* GLOBAL FOOTER */}
-      {/* ============================================================ */}
-      <footer className="bg-[#0F172A] text-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
-            <div className="col-span-2 md:col-span-1">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-[#2563EB] to-[#0F172A] rounded-xl flex items-center justify-center">
-                  <Brain className="w-6 h-6 text-white" />
+      {/* ===== FOOTER ===== */}
+      <footer className="bg-gray-100 py-16 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-8 mb-12">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="h-8 w-8 rounded bg-blue-600 flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">W</span>
                 </div>
-                <div>
-                  <span className="text-xl font-bold text-white tracking-tight">
-                    WaveCore
-                  </span>
-                  <span className="text-[10px] font-medium text-[#2563EB] block -mt-0.5 tracking-wider uppercase">
-                    AI Enterprise Platform
-                  </span>
-                </div>
+                <span className="font-bold text-gray-900">WaveCore<span className="text-blue-600">ERP</span></span>
               </div>
-              <p className="text-sm text-gray-400 mb-4 max-w-xs">
-                The AI Operating System for Modern Businesses. Unifying enterprise operations worldwide.
-              </p>
-              <div className="flex gap-4">
-                <a href="#" className="text-gray-400 hover:text-white transition-colors"><Twitter className="w-5 h-5" /></a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors"><Linkedin className="w-5 h-5" /></a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors"><Github className="w-5 h-5" /></a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors"><Youtube className="w-5 h-5" /></a>
-              </div>
+              <p className="text-sm text-gray-500">AI-powered ERP for modern businesses. KES 1,000/month.</p>
             </div>
             <div>
-              <h4 className="text-sm font-semibold mb-4">Products</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">ERP Core</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">AI Copilot</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Analytics</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Mobile App</a></li>
+              <h4 className="font-semibold text-gray-900 mb-3">Product</h4>
+              <ul className="space-y-2 text-sm text-gray-500">
+                <li><a href="#modules" className="hover:text-blue-600">Modules</a></li>
+                <li><a href="#features" className="hover:text-blue-600">Features</a></li>
+                <li><a href="#pricing" className="hover:text-blue-600">Pricing</a></li>
+                <li><a href="#" className="hover:text-blue-600">Updates</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-sm font-semibold mb-4">Solutions</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Enterprise</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">SMB</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Nonprofit</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Government</a></li>
+              <h4 className="font-semibold text-gray-900 mb-3">Company</h4>
+              <ul className="space-y-2 text-sm text-gray-500">
+                <li><a href="#" className="hover:text-blue-600">About</a></li>
+                <li><a href="#" className="hover:text-blue-600">Contact</a></li>
+                <li><a href="#" className="hover:text-blue-600">Privacy</a></li>
+                <li><a href="#" className="hover:text-blue-600">Terms</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-sm font-semibold mb-4">Resources</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Community</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-sm font-semibold mb-4">Company</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">About</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Partners</a></li>
+              <h4 className="font-semibold text-gray-900 mb-3">Support</h4>
+              <ul className="space-y-2 text-sm text-gray-500">
+                <li><a href="#" className="hover:text-blue-600">Help Center</a></li>
+                <li><a href="#" className="hover:text-blue-600">Documentation</a></li>
+                <li><a href="#" className="hover:text-blue-600">API</a></li>
+                <li><span className="text-gray-400">support@wavecore.app</span></li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-gray-400">© 2024 WaveCore ERP. All rights reserved.</p>
-            <div className="flex gap-6 text-sm text-gray-400">
-              <a href="#" className="hover:text-white transition-colors">Privacy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms</a>
-              <a href="#" className="hover:text-white transition-colors">Cookies</a>
+          <div className="border-t border-gray-200 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-400">
+            <span>© 2026 WaveCore Technologies. All rights reserved.</span>
+            <div className="flex items-center gap-6">
+              <span>M-Pesa Till: <strong className="text-gray-600">4760783</strong></span>
+              <span>KES 1,000/month</span>
             </div>
           </div>
         </div>
