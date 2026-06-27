@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '@/stores/auth-store';
 import { useTheme } from 'next-themes';
 import { toast } from 'sonner';
-import { Eye, EyeOff, Loader2, Mail, Lock, ArrowRight, Sun, Moon, Wifi, WifiOff, Github, Chrome, Star } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Mail, Lock, ArrowRight, Sun, Moon, Wifi, WifiOff, Shield, Zap, Globe, Star } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -31,53 +31,47 @@ export default function LoginPage() {
       const r = await login(email, password);
       if (r?.requiresMfa) router.push('/verify-otp?email='+email);
       else if (!r?.isSubscribed) router.push('/settings/subscription');
-      else { toast.success('Welcome!'); router.push('/dashboard'); }
+      else { toast.success('Welcome back!'); router.push('/dashboard'); }
     } catch { toast.error('Invalid credentials'); }
     finally { setIsSubmitting(false); }
   };
 
   return (
-    <div className="flex min-h-screen bg-[#030712]">
-      <div className="hidden lg:flex lg:w-[60%] relative overflow-hidden items-center justify-center">
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 -left-20 w-[500px] h-[500px] bg-blue-600/15 rounded-full blur-[120px] animate-pulse" />
-          <div className="absolute bottom-1/4 -right-20 w-[500px] h-[500px] bg-purple-600/15 rounded-full blur-[120px] animate-pulse" style={{animationDelay:'2s'}} />
+    <div className="flex min-h-screen bg-white">
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 relative overflow-hidden items-center justify-center p-12">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-96 h-96 bg-white/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 right-10 w-80 h-80 bg-blue-300/20 rounded-full blur-3xl" />
         </div>
-        <div className="relative z-10 max-w-xl px-16">
-          <div className="flex items-center gap-3 mb-12">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 via-purple-500 to-cyan-500 shadow-2xl">
-              <svg viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6 text-white"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            </div>
-            <div><h1 className="text-2xl font-bold">WAVECORE<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 ml-1">ERP</span></h1><p className="text-xs text-gray-500">Enterprise Intelligence Platform</p></div>
-          </div>
-          <h2 className="text-5xl font-bold leading-tight mb-6">Intelligent{' '}<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400">Enterprise</span><br />Resource Planning</h2>
-          <p className="text-lg text-gray-500 mb-12">AI-powered ERP that transforms how modern enterprises manage inventory, accounting, CRM, HRM, and analytics.</p>
+        <div className="relative z-10 max-w-md text-white">
+          <Link href="/" className="flex items-center gap-3 mb-12">
+            <img src="/wavecoreerplogo.png" alt="WaveCore" className="h-10 w-auto brightness-0 invert" />
+            <span className="text-xl font-bold">WAVECORE<span className="text-blue-200">ERP</span></span>
+          </Link>
+          <h2 className="text-5xl font-bold leading-tight mb-6">The AI Operating System for Business</h2>
+          <p className="text-lg text-blue-200/80 mb-12">One platform. Every ERP module. KES 1,000/month.</p>
           <div className="grid grid-cols-2 gap-4">
-            {[{v:'10,000+',l:'Active Companies'},{v:'KES 50B+',l:'Transactions'},{v:'99.99%',l:'Uptime SLA'},{v:'24/7',l:'AI Support'}].map(s=><div key={s.l} className="rounded-xl border border-white/[0.04] bg-white/[0.01] p-5"><p className="text-2xl font-bold">{s.v}</p><p className="text-sm text-gray-400">{s.l}</p></div>)}
+            {[{icon:Star,value:'10,000+',label:'Businesses'},{icon:Globe,value:'40+',label:'Countries'},{icon:Shield,value:'99.99%',label:'Uptime'},{icon:Zap,value:'24/7',label:'AI Support'}].map(s=><div key={s.label} className="rounded-xl bg-white/10 backdrop-blur-sm border border-white/10 p-5"><s.icon className="h-5 w-5 text-blue-300 mb-2" /><p className="text-2xl font-bold">{s.value}</p><p className="text-xs text-blue-200/60">{s.label}</p></div>)}
           </div>
         </div>
       </div>
-      <div className="flex w-full lg:w-[40%] items-center justify-center px-8 border-l border-white/[0.03]">
+      <div className="flex w-full lg:w-1/2 items-center justify-center px-8 bg-white">
         <div className="w-full max-w-md">
           <div className="flex items-center justify-between mb-10">
-            <div className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium ${isOnline?'bg-emerald-500/5 text-emerald-400 border-emerald-500/10':'bg-red-500/5 text-red-400 border-red-500/10'}`}><div className={`h-1.5 w-1.5 rounded-full ${isOnline?'bg-emerald-400 animate-pulse':'bg-red-400'}`}/>{isOnline?'Connected':'Offline'}</div>
-            <button onClick={()=>setTheme(theme==='dark'?'light':'dark')} className="flex h-9 w-9 items-center justify-center rounded-full bg-white/[0.03] border border-white/[0.04]"><Sun className="absolute h-4 w-4 text-amber-400 dark:opacity-0"/><Moon className="absolute h-4 w-4 text-gray-400 opacity-0 dark:opacity-100"/></button>
+            <div className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium border ${isOnline?'bg-green-50 text-green-700 border-green-200':'bg-red-50 text-red-700 border-red-200'}`}><div className={`h-1.5 w-1.5 rounded-full ${isOnline?'bg-green-500 animate-pulse':'bg-red-500'}`}/>{isOnline?'Connected':'Offline'}</div>
+            <button onClick={()=>setTheme(theme==='dark'?'light':'dark')} className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition"><Sun className="h-4 w-4 text-amber-500 dark:opacity-0 absolute"/><Moon className="h-4 w-4 text-gray-500 opacity-0 dark:opacity-100 absolute"/></button>
           </div>
-          <h2 className="text-3xl font-bold mb-2">Welcome back</h2>
-          <p className="text-gray-500 mb-8">Sign in to your enterprise account</p>
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            <button className="flex items-center justify-center gap-2 rounded-xl border border-white/[0.04] bg-white/[0.01] py-3 text-sm text-gray-400 hover:text-white transition"><Chrome className="h-4 w-4"/>Google</button>
-            <button className="flex items-center justify-center gap-2 rounded-xl border border-white/[0.04] bg-white/[0.01] py-3 text-sm text-gray-400 hover:text-white transition"><Github className="h-4 w-4"/>GitHub</button>
-          </div>
-          <div className="relative mb-6"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/[0.04]"/></div><div className="relative flex justify-center"><span className="bg-[#030712] px-3 text-xs text-gray-600 uppercase">or with email</span></div></div>
+          <div className="flex justify-center mb-8 lg:hidden"><Link href="/" className="flex items-center gap-2"><img src="/wavecoreerplogo.png" alt="WaveCore" className="h-8"/><span className="text-xl font-bold text-gray-900">WAVECORE<span className="text-blue-600">ERP</span></span></Link></div>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome back</h2>
+          <p className="text-gray-500 mb-8">Sign in to your WaveCore ERP account</p>
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div><label className="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Email</label><div className="relative"><Mail className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-600"/><input type="email" placeholder="you@enterprise.com" value={email} onChange={e=>setEmail(e.target.value)} required className="w-full h-12 pl-12 pr-4 rounded-xl border border-white/[0.04] bg-white/[0.01] text-white placeholder:text-gray-700 focus:outline-none focus:border-blue-500/30 transition-all text-sm"/></div></div>
-            <div><div className="flex justify-between mb-2"><label className="text-xs font-medium text-gray-400 uppercase tracking-wider">Password</label><Link href="/forgot-password" className="text-xs text-blue-400">Forgot?</Link></div><div className="relative"><Lock className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-600"/><input type={showPassword?'text':'password'} placeholder="••••••••••" value={password} onChange={e=>setPassword(e.target.value)} required className="w-full h-12 pl-12 pr-12 rounded-xl border border-white/[0.04] bg-white/[0.01] text-white placeholder:text-gray-700 focus:outline-none focus:border-blue-500/30 transition-all text-sm"/><button type="button" onClick={()=>setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600">{showPassword?<EyeOff className="h-4 w-4"/>:<Eye className="h-4 w-4"/>}</button></div></div>
-            <div className="flex items-center"><input type="checkbox" className="h-4 w-4 rounded border-white/[0.08] bg-white/[0.02]"/><label className="ml-2 text-sm text-gray-500">Remember me</label></div>
-            <button type="submit" disabled={isSubmitting||!isOnline} className="relative w-full h-12 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-sm shadow-xl hover:scale-[1.01] transition-all overflow-hidden disabled:opacity-50">{isSubmitting?<span className="flex items-center justify-center gap-2"><Loader2 className="h-4 w-4 animate-spin"/>Signing in...</span>:<span className="flex items-center justify-center gap-2">Sign In<ArrowRight className="h-4 w-4"/></span>}</button>
+            <div><label className="block text-sm font-medium text-gray-700 mb-1.5">Email address</label><div className="relative"><Mail className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"/><input type="email" placeholder="you@company.com" value={email} onChange={e=>setEmail(e.target.value)} required className="w-full h-12 pl-12 pr-4 rounded-xl border border-gray-200 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm"/></div></div>
+            <div><div className="flex justify-between mb-1.5"><label className="text-sm font-medium text-gray-700">Password</label><Link href="/forgot-password" className="text-xs text-blue-600 hover:text-blue-700 font-medium">Forgot?</Link></div><div className="relative"><Lock className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"/><input type={showPassword?'text':'password'} placeholder="••••••••" value={password} onChange={e=>setPassword(e.target.value)} required className="w-full h-12 pl-12 pr-12 rounded-xl border border-gray-200 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm"/><button type="button" onClick={()=>setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">{showPassword?<EyeOff className="h-4 w-4"/>:<Eye className="h-4 w-4"/>}</button></div></div>
+            <div className="flex items-center"><input type="checkbox" id="remember" className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"/><label htmlFor="remember" className="ml-2 text-sm text-gray-500">Remember me</label></div>
+            <button type="submit" disabled={isSubmitting||!isOnline} className="w-full h-12 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-lg shadow-blue-200 transition flex items-center justify-center gap-2 disabled:opacity-50">{isSubmitting?<Loader2 className="h-4 w-4 animate-spin"/>:<ArrowRight className="h-4 w-4"/>}Sign In</button>
           </form>
-          <p className="mt-6 text-center text-sm text-gray-600">No account? <Link href="/register" className="text-blue-400 font-medium">Start free trial</Link></p>
-          <div className="mt-8 pt-6 border-t border-white/[0.03] flex justify-between text-xs text-gray-700"><span>KES 1,000/month · M-Pesa 4760783</span><span>WAVECORE ERP v2.0</span></div>
+          <p className="mt-6 text-center text-sm text-gray-500">No account? <Link href="/register" className="text-blue-600 hover:text-blue-700 font-semibold">Start free trial</Link></p>
+          <p className="mt-8 text-center text-xs text-gray-400">KES 1,000/month · M-Pesa Till 4760783</p>
         </div>
       </div>
     </div>
