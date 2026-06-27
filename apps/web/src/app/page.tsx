@@ -1,127 +1,178 @@
 import Link from 'next/link';
-import { Shield, Zap, Globe, BarChart3, TrendingUp, ArrowRight, Check, Star, Building2, Factory, Store, GraduationCap, Heart, Truck, Wheat, Wrench, Landmark, Users } from 'lucide-react';
+import { Shield, Zap, Globe, BarChart3, TrendingUp, ArrowRight, Check, Star, ChevronRight } from 'lucide-react';
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-white text-gray-900 overflow-x-hidden">
-      <header className="fixed top-0 w-full z-50 border-b border-gray-100 bg-white/95 backdrop-blur-sm">
+    <div className="min-h-screen bg-[#f8fafc] text-gray-900">
+      {/* Top Bar */}
+      <div className="bg-gray-900 text-white text-xs text-center py-2 px-4">
+        🚀 WaveCore ERP v2.0 is live — One plan, all modules, KES 1,000/month. <a href="/register" className="underline font-medium ml-2">Get Started →</a>
+      </div>
+
+      {/* Navigation */}
+      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-2">
-            <img src="/wavecoreerplogo.png" alt="WaveCore ERP" className="h-8 w-auto" />
-            <span className="text-lg font-bold text-gray-900 hidden sm:inline">WAVECORE<span className="text-blue-600">ERP</span></span>
-          </a>
-          <nav className="hidden md:flex items-center gap-8 text-sm text-gray-600">
-            <a href="#features" className="hover:text-blue-600 transition">Features</a>
-            <a href="#industries" className="hover:text-blue-600 transition">Industries</a>
-            <a href="#ai" className="hover:text-blue-600 transition">AI</a>
-            <a href="#pricing" className="hover:text-blue-600 transition">Pricing</a>
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="h-8 w-8 rounded-lg bg-gray-900 flex items-center justify-center">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 text-white"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <span className="text-lg font-bold tracking-tight">WaveCore<span className="text-gray-400 font-normal">ERP</span></span>
+          </Link>
+          <nav className="hidden md:flex items-center gap-1 text-sm">
+            {['Product','Industries','AI','Pricing','Docs'].map(item => (
+              <a key={item} href={'#' + item.toLowerCase()} className="px-4 py-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition">{item}</a>
+            ))}
           </nav>
           <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm text-gray-600 hover:text-blue-600 transition font-medium">Sign in</Link>
-            <Link href="/register" className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700 transition shadow-sm">Get Started</Link>
+            <Link href="/login" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition">Log in</Link>
+            <Link href="/register" className="rounded-lg bg-gray-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-gray-800 transition shadow-sm">Start Free Trial</Link>
           </div>
         </div>
       </header>
-      <section className="relative pt-28 pb-20 px-6 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-1.5 text-sm text-blue-700 mb-6">
-                <Star className="h-4 w-4 fill-blue-500 text-blue-500" /> AI-Powered Enterprise Platform
-              </div>
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.08] tracking-tight text-gray-900">The AI Operating System for Business</h1>
-              <p className="mt-6 text-lg text-gray-500 max-w-lg leading-relaxed">One platform. One subscription. Every ERP module. Powered by artificial intelligence. Built for businesses in Africa and worldwide.</p>
-              <div className="mt-8 flex items-center gap-4">
-                <Link href="/register" className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-8 py-4 text-base font-semibold text-white hover:bg-blue-700 transition shadow-lg shadow-blue-200">Start Free Trial <ArrowRight className="h-5 w-5" /></Link>
-                <p className="text-sm text-gray-400">KES 1,000/month<br />No hidden costs</p>
-              </div>
-              <div className="mt-8 flex items-center gap-2 text-sm text-gray-400">
-                <span>Pay via M-Pesa Till <strong className="text-gray-700">4760783</strong></span>
-              </div>
+
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-white">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_#e0e7ff_0%,_transparent_60%)]" />
+        <div className="relative max-w-7xl mx-auto px-6 pt-20 pb-28">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-50 border border-green-100 text-green-700 text-sm font-medium mb-8">
+              <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" /><span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" /></span>
+              Live — Processing KES 50B+ in transactions
             </div>
-            <div className="relative">
-              <div className="rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-1 shadow-2xl">
-                <div className="rounded-xl bg-gray-900 p-6 text-white">
-                  <div className="flex items-center gap-2 mb-6">
-                    <div className="flex gap-1.5"><div className="h-3 w-3 rounded-full bg-red-500" /><div className="h-3 w-3 rounded-full bg-yellow-500" /><div className="h-3 w-3 rounded-full bg-green-500" /></div>
-                    <span className="text-xs text-gray-400 ml-2">WaveCore ERP Dashboard</span>
+            <h1 className="text-6xl md:text-7xl font-bold tracking-tight text-gray-900 leading-[1.08]">
+              The AI platform<br />that runs your<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">entire business</span>
+            </h1>
+            <p className="mt-6 text-xl text-gray-500 max-w-xl leading-relaxed">
+              Inventory, accounting, POS, HR, CRM, procurement, manufacturing — 
+              all in one platform. Powered by AI. KES 1,000/month.
+            </p>
+            <div className="mt-8 flex items-center gap-4">
+              <Link href="/register" className="inline-flex items-center gap-2 rounded-xl bg-gray-900 px-7 py-3.5 text-base font-semibold text-white hover:bg-gray-800 transition shadow-lg shadow-gray-200">
+                Get Started <ArrowRight className="h-4 w-4" />
+              </Link>
+              <button className="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-7 py-3.5 text-base font-semibold text-gray-700 hover:bg-gray-50 transition">
+                Watch Demo <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+            <div className="mt-8 flex items-center gap-6 text-sm text-gray-400">
+              <span className="flex items-center gap-1.5"><Check className="h-4 w-4 text-green-500" /> No credit card required</span>
+              <span className="flex items-center gap-1.5"><Check className="h-4 w-4 text-green-500" /> 14-day free trial</span>
+              <span className="flex items-center gap-1.5"><Check className="h-4 w-4 text-green-500" /> Cancel anytime</span>
+            </div>
+          </div>
+        </div>
+        {/* Dashboard Preview */}
+        <div className="max-w-6xl mx-auto px-6 -mt-12 pb-20">
+          <div className="rounded-2xl border border-gray-200 bg-white shadow-2xl shadow-gray-200/50 overflow-hidden">
+            <div className="bg-gray-50 border-b border-gray-100 px-4 py-2 flex items-center gap-2">
+              <div className="flex gap-1.5"><div className="h-3 w-3 rounded-full bg-red-400" /><div className="h-3 w-3 rounded-full bg-yellow-400" /><div className="h-3 w-3 rounded-full bg-green-400" /></div>
+              <span className="text-xs text-gray-400 ml-2">WaveCore ERP — Live Dashboard</span>
+            </div>
+            <div className="p-6">
+              <div className="grid grid-cols-4 gap-4 mb-6">
+                {[
+                  { label: 'Revenue Today', value: 'KES 1,247,500', change: '+12.5%', up: true },
+                  { label: 'Active Orders', value: '342', change: '+8%', up: true },
+                  { label: 'Inventory Items', value: '8,450', change: '98% healthy', up: true },
+                  { label: 'AI Insights', value: '24', change: '5 critical', up: false },
+                ].map(card => (
+                  <div key={card.label} className="rounded-xl border border-gray-100 p-4">
+                    <p className="text-xs text-gray-400">{card.label}</p>
+                    <p className="text-xl font-bold mt-1">{card.value}</p>
+                    <span className={`text-xs ${card.up ? 'text-green-600' : 'text-amber-600'}`}>{card.change}</span>
                   </div>
-                  <div className="grid grid-cols-2 gap-3 mb-4">
-                    {[{label:'Revenue',value:'KES 2.4M',color:'text-green-400'},{label:'Orders',value:'1,295',color:'text-blue-400'},{label:'Inventory',value:'8,450',color:'text-purple-400'},{label:'AI Score',value:'97.8%',color:'text-amber-400'}].map(c=><div key={c.label} className="rounded-lg bg-gray-800 p-3"><p className="text-xs text-gray-400">{c.label}</p><p className={`text-lg font-bold ${c.color}`}>{c.value}</p></div>)}
-                  </div>
-                  <div className="h-32 rounded-lg bg-gray-800 flex items-center justify-center"><BarChart3 className="h-12 w-12 text-gray-600" /></div>
+                ))}
+              </div>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="col-span-2 h-48 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center">
+                  <BarChart3 className="h-12 w-12 text-gray-300" />
+                </div>
+                <div className="h-48 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center">
+                  <Globe className="h-12 w-12 text-gray-300" />
                 </div>
               </div>
-              <div className="absolute -bottom-4 -left-4 rounded-xl bg-white shadow-lg border px-4 py-2 flex items-center gap-2"><Shield className="h-5 w-5 text-green-500" /><span className="text-sm font-medium">SOC2 Compliant</span></div>
-              <div className="absolute -top-4 -right-4 rounded-xl bg-white shadow-lg border px-4 py-2 flex items-center gap-2"><Zap className="h-5 w-5 text-amber-500" /><span className="text-sm font-medium">AI-Powered</span></div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Trusted By */}
       <section className="py-16 border-y border-gray-100 bg-white">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[{v:'10,000+',l:'Businesses',icon:Building2},{v:'40+',l:'Countries',icon:Globe},{v:'KES 50B+',l:'Revenue Processed',icon:BarChart3},{v:'99.99%',l:'Uptime',icon:Shield}].map(s=><div key={s.l} className="text-center"><s.icon className="h-6 w-6 text-blue-500 mx-auto mb-2" /><p className="text-3xl font-bold text-gray-900">{s.v}</p><p className="text-sm text-gray-500 mt-1">{s.l}</p></div>)}
+          <p className="text-center text-xs text-gray-400 uppercase tracking-wider font-medium mb-8">Trusted by businesses across Africa</p>
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-8 items-center opacity-50">
+            {['Safaricom','KCB','Equity','Kenya Airways','Bamburi','Bidco'].map(n => (
+              <div key={n} className="text-center text-sm font-bold text-gray-400">{n}</div>
+            ))}
           </div>
         </div>
       </section>
-      <section id="industries" className="py-24 px-6 bg-gray-50">
+
+      {/* Features Grid */}
+      <section className="py-24 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16"><h2 className="text-4xl font-bold text-gray-900 mb-4">Solutions for Every Industry</h2><p className="text-gray-500 max-w-xl mx-auto">Tailored ERP modules for your specific business needs.</p></div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[{icon:Store,name:'Retail',desc:'POS, inventory, multi-store'},{icon:Factory,name:'Manufacturing',desc:'BOM, work orders, QC'},{icon:Heart,name:'Healthcare',desc:'Pharmacy POS, billing'},{icon:GraduationCap,name:'Education',desc:'Fee management, payroll'},{icon:Truck,name:'Logistics',desc:'Fleet tracking'},{icon:Wheat,name:'Agriculture',desc:'Supply chain'},{icon:Wrench,name:'Construction',desc:'Project costing'},{icon:Landmark,name:'Finance',desc:'Accounting, tax'}].map(ind=><div key={ind.name} className="group rounded-xl bg-white border border-gray-100 p-6 hover:border-blue-200 hover:shadow-md transition-all text-center"><ind.icon className="h-10 w-10 text-blue-500 mx-auto mb-3 group-hover:scale-110 transition-transform" /><h3 className="font-semibold text-gray-900">{ind.name}</h3><p className="text-xs text-gray-400 mt-1">{ind.desc}</p></div>)}
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Everything you need to run your business</h2>
+            <p className="text-gray-500 max-w-xl mx-auto">18+ integrated modules. One subscription. No per-module pricing.</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-1">
+            {[
+              { title: 'Inventory & Warehousing', desc: 'Real-time stock tracking, batch expiry, multi-warehouse transfers, barcode scanning, stock counts.' },
+              { title: 'Point of Sale (POS)', desc: 'Retail, restaurant, pharmacy POS. M-Pesa, card, cash. Offline mode. Receipt printing.' },
+              { title: 'CRM & Sales', desc: 'Customer database, lead pipeline, loyalty programs, marketing automation, customer portal.' },
+              { title: 'Accounting & Finance', desc: 'Double-entry ledger, invoicing, expenses, bank reconciliation, financial statements, tax.' },
+              { title: 'HRM & Payroll', desc: 'Employee records, attendance, leave management, PAYE, NSSF, NHIF, payslip generation.' },
+              { title: 'Procurement', desc: 'Supplier management, purchase orders, goods received notes, vendor payments.' },
+              { title: 'Manufacturing', desc: 'Bill of materials, work orders, production planning, quality control.' },
+              { title: 'AI Copilot', desc: 'Business assistant, sales forecasting, fraud detection, cash flow prediction, smart insights.' },
+              { title: 'Reports & Analytics', desc: 'Custom dashboards, KPI tracking, PDF/Excel exports, real-time business intelligence.' },
+            ].map(f => (
+              <div key={f.title} className="group rounded-xl p-6 hover:bg-gray-50 transition-colors cursor-default">
+                <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">{f.title}</h3>
+                <p className="text-sm text-gray-500 leading-relaxed">{f.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
-      <section id="features" className="py-24 px-6 bg-white">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Complete ERP Modules</h2>
-          <p className="text-gray-500 mb-12">18+ modules included in your KES 1,000/month subscription.</p>
-          <div className="flex flex-wrap justify-center gap-3">
-            {['Accounting','POS','Inventory','CRM','Payroll','HRM','Procurement','Manufacturing','Warehouse','Assets','Projects','Help Desk','Fleet','Banking','Tax','Compliance','Reports','AI Copilot'].map(m=><span key={m} className="inline-flex items-center gap-2 rounded-full bg-gray-50 border border-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-700 transition cursor-default"><Check className="h-4 w-4 text-green-500" />{m}</span>)}
-          </div>
-        </div>
-      </section>
-      <section id="ai" className="py-24 px-6 bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-4">Powered by Artificial Intelligence</h2>
-          <p className="text-blue-200 mb-12 max-w-xl mx-auto">AI is integrated into every module, not bolted on.</p>
-          <div className="grid md:grid-cols-4 gap-6">
-            {[{icon:TrendingUp,title:'AI Accounting',desc:'Automated reconciliation'},{icon:BarChart3,title:'AI Forecasting',desc:'Sales predictions'},{icon:Shield,title:'AI Fraud Detection',desc:'Real-time anomaly detection'},{icon:Users,title:'AI HR',desc:'Smart payroll insights'}].map(f=><div key={f.title} className="rounded-xl bg-white/10 backdrop-blur-sm border border-white/10 p-6 text-left hover:bg-white/15 transition"><f.icon className="h-8 w-8 text-blue-300 mb-3" /><h3 className="font-semibold text-lg mb-1">{f.title}</h3><p className="text-sm text-blue-200">{f.desc}</p></div>)}
-          </div>
-        </div>
-      </section>
-      <section id="pricing" className="py-24 px-6 bg-white">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Simple, Transparent Pricing</h2>
-          <p className="text-gray-500 mb-12">One subscription. All modules. No hidden costs.</p>
-          <div className="rounded-3xl border-2 border-blue-500 bg-gradient-to-b from-blue-50 to-white p-10 shadow-xl shadow-blue-100">
-            <img src="/wavecoreerplogo.png" alt="WaveCore" className="h-10 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">WaveCore ERP</h3>
-            <div className="my-6"><span className="text-6xl font-bold text-blue-600">KES 1,000</span><span className="text-xl text-gray-400">/month</span></div>
-            <p className="text-gray-500 mb-6">One subscription. Unlimited access to every ERP module.</p>
-            <ul className="space-y-3 text-left max-w-xs mx-auto mb-8">
-              {['All 18+ ERP Modules','Unlimited Users','AI Copilot Included','Mobile Apps','Email & Chat Support','Automatic Updates','M-Pesa Payments'].map(f=><li key={f} className="flex items-center gap-3 text-gray-700"><Check className="h-5 w-5 text-green-500 flex-shrink-0" />{f}</li>)}
+
+      {/* Single Plan Pricing */}
+      <section className="py-24 px-6 bg-gray-50">
+        <div className="max-w-lg mx-auto text-center">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">One plan. One price.</h2>
+          <p className="text-gray-500 mb-12">Every module included. No hidden costs.</p>
+          <div className="rounded-3xl bg-white border border-gray-200 shadow-xl shadow-gray-100 p-10">
+            <h3 className="text-xl font-bold text-gray-900 mb-2">WaveCore ERP</h3>
+            <p className="text-gray-500 text-sm mb-6">Complete business platform</p>
+            <div className="mb-6">
+              <span className="text-6xl font-bold text-gray-900">KES 1,000</span>
+              <span className="text-gray-400 text-lg">/month</span>
+            </div>
+            <ul className="space-y-3 text-left mb-8">
+              {[
+                'All 18+ ERP modules included',
+                'Unlimited users',
+                'AI Copilot',
+                'Mobile apps',
+                'M-Pesa payments',
+                'Email & chat support',
+                'Automatic updates',
+                '14-day free trial',
+              ].map(f => <li key={f} className="flex items-center gap-3 text-sm text-gray-600"><Check className="h-4 w-4 text-green-500 flex-shrink-0" />{f}</li>)}
             </ul>
-            <Link href="/register" className="block w-full rounded-xl bg-blue-600 py-4 text-lg font-semibold text-white hover:bg-blue-700 transition shadow-lg">Get Started for KES 1,000</Link>
-            <p className="mt-4 text-sm text-gray-400">Pay via M-Pesa Till <strong className="text-gray-600">4760783</strong></p>
-          </div>
-          <div className="mt-8 grid grid-cols-3 gap-4 text-sm text-gray-500">
-            <div className="flex items-center gap-1 justify-center"><Shield className="h-4 w-4 text-green-500" />No hidden fees</div>
-            <div className="flex items-center gap-1 justify-center"><Zap className="h-4 w-4 text-amber-500" />Cancel anytime</div>
-            <div className="flex items-center gap-1 justify-center"><Globe className="h-4 w-4 text-blue-500" />All countries</div>
+            <Link href="/register" className="block w-full rounded-xl bg-gray-900 py-3.5 text-base font-semibold text-white hover:bg-gray-800 transition">Start 14-Day Free Trial</Link>
+            <p className="mt-4 text-xs text-gray-400">Pay via M-Pesa Till <strong className="text-gray-600">4760783</strong> after trial</p>
           </div>
         </div>
       </section>
-      <footer className="border-t border-gray-100 py-12 px-6 bg-gray-50">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <img src="/wavecoreerplogo.png" alt="WaveCore" className="h-8" />
-            <span className="text-sm text-gray-500">© 2026 WaveCore Technologies</span>
-          </div>
-          <div className="flex items-center gap-6 text-sm text-gray-400">
+
+      {/* Footer */}
+      <footer className="border-t border-gray-100 bg-white py-12 px-6">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-400">
+          <span>© 2026 WaveCore Technologies</span>
+          <div className="flex items-center gap-6">
             <span>M-Pesa Till: <strong className="text-gray-600">4760783</strong></span>
-            <span>KES 1,000/month</span>
             <span>support@wavecore.app</span>
           </div>
         </div>
