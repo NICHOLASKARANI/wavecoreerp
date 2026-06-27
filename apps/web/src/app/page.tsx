@@ -547,7 +547,7 @@ export default function HomePage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
                 whileHover={{ y: -5 }}
-                className={p-6 bg-gradient-to-br  rounded-xl text-white cursor-pointer relative overflow-hidden group}
+                className={"p-6 bg-gradient-to-br " + industry.gradient + " rounded-xl text-white cursor-pointer relative overflow-hidden group"}
               >
                 <div className="relative z-10">
                   <industry.icon className="w-8 h-8 mb-3" />
@@ -638,7 +638,7 @@ export default function HomePage() {
                   className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
                 >
                   <span className="text-sm font-medium text-gray-900 dark:text-white">{faq.question}</span>
-                  <ChevronRight className={w-4 h-4 text-gray-400 transition-transform } />
+                  <ChevronRight className={"w-4 h-4 text-gray-400 transition-transform " + (activeFaq === index ? "rotate-90" : "")} />
                 </button>
                 <AnimatePresence>
                   {activeFaq === index && (
