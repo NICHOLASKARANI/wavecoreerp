@@ -3,17 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { 
-  Menu, X, ChevronRight, Play, Sparkles, Brain, 
+  Menu, X, ChevronRight, Play, Brain, 
   Shield, Cloud, Database, Globe, Zap, TrendingUp,
   Users, Building, Store, Truck, Factory, Hotel,
-  School, Hospital, Bank, ShoppingBag, Coffee,
-  BarChart3, PieChart, LineChart, Activity,
+  School, Hospital, ShoppingBag, Coffee,
+  BarChart3, PieChart, LineChart,
   ArrowUpRight, ArrowDownRight, DollarSign,
-  Package, ShoppingCart, User, Settings,
-  Lock, Clock, RefreshCw, Layers, Code,
-  CheckCircle, Star, Quote, Mail, Phone,
-  Linkedin, Twitter, Github, Youtube,
-  Instagram, Facebook, MapPin, Send
+  Package, ShoppingCart, User, 
+  Layers, Code, CheckCircle, Star, Quote, 
+  Linkedin, Twitter, Github, Youtube
 } from "lucide-react";
 import { Area, AreaChart, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
@@ -143,9 +141,6 @@ export default function HomePage() {
     offset: ["start start", "end end"],
   });
 
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
-
   useEffect(() => {
     setIsLoaded(true);
   }, []);
@@ -229,29 +224,6 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80')] bg-cover bg-center opacity-10" />
           <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 via-transparent to-cyan-600/5" />
           <div className="absolute inset-0 bg-white/95 dark:bg-black/95" />
-          
-          {/* Particle system */}
-          <div className="absolute inset-0 overflow-hidden">
-            {Array.from({ length: 50 }).map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-1 h-1 bg-blue-400/20 dark:bg-blue-400/10 rounded-full"
-                animate={{
-                  x: [0, Math.random() * 1000 - 500],
-                  y: [0, Math.random() * 1000 - 500],
-                }}
-                transition={{
-                  duration: Math.random() * 20 + 10,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-                style={{
-                  left: Math.random() * 100 + "%",
-                  top: Math.random() * 100 + "%",
-                }}
-              />
-            ))}
-          </div>
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -342,39 +314,10 @@ export default function HomePage() {
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
-
-                {/* AI Insights */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.7 }}
-                  className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl border border-blue-200/50 dark:border-blue-800/50"
-                >
-                  <div className="flex items-start gap-3">
-                    <Brain className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
-                    <div>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">AI Forecast</p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                        Revenue projected to increase by 12.5% next quarter based on current trends
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
               </div>
             </motion.div>
           </div>
         </div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <div className="w-6 h-10 border-2 border-gray-300 dark:border-gray-700 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-gray-300 dark:bg-gray-700 rounded-full mt-2" />
-          </div>
-        </motion.div>
       </section>
 
       {/* Trusted Companies */}
