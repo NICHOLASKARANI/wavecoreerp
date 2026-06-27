@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { 
   Menu, X, ChevronRight, Play, Brain, 
   Shield, Cloud, Globe, Zap, TrendingUp,
@@ -16,12 +16,17 @@ import {
   Award, Briefcase, Heart, Leaf,
   Building2, Banknote, Wallet, PieChart,
   FileText, Lightbulb, Target, Globe2,
-  Plane, Train, Bus, Car
+  Plane, Train, Bus, Car, Database,
+  Cpu, Activity, RefreshCw, Workflow,
+  LineChart, PieChart as PieChartIcon
 } from "lucide-react";
+
+import { Area, AreaChart, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -36,10 +41,38 @@ export default function HomePage() {
     setIsLoaded(true);
   }, []);
 
+  // Chart data
+  const revenueData = [
+    { name: "Jan", revenue: 45000 },
+    { name: "Feb", revenue: 52000 },
+    { name: "Mar", revenue: 48000 },
+    { name: "Apr", revenue: 61000 },
+    { name: "May", revenue: 58000 },
+    { name: "Jun", revenue: 72000 },
+    { name: "Jul", revenue: 68000 },
+  ];
+
+  const inventoryData = [
+    { name: "Warehouse A", value: 4500 },
+    { name: "Warehouse B", value: 3200 },
+    { name: "Warehouse C", value: 2800 },
+    { name: "Warehouse D", value: 1900 },
+    { name: "Warehouse E", value: 3600 },
+  ];
+
+  // Floating metrics
+  const metrics = [
+    { label: "Revenue", value: "$1.24M", change: "+12.5%", icon: DollarSign },
+    { label: "Orders", value: "8,450", change: "+8.2%", icon: ShoppingCart },
+    { label: "Inventory", value: "23,400", change: "-3.1%", icon: Package },
+    { label: "Profit", value: "$489K", change: "+15.8%", icon: TrendingUp },
+  ];
+
   return (
-    <div ref={containerRef} className="bg-white min-h-screen overflow-x-hidden selection:bg-blue-500/20 font-sans antialiased">
-      {/* Premium Navigation - Transparent to Solid */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
+    <div ref={containerRef} className="bg-[#FFFFFF] min-h-screen overflow-x-hidden selection:bg-[#2563EB]/20 font-sans antialiased">
+      
+      {/* === PREMIUM NAVIGATION === */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100/50">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <motion.div 
@@ -117,16 +150,71 @@ export default function HomePage() {
         )}
       </nav>
 
-      {/* HERO SECTION - Split Screen with Premium Photography */}
-      <section className="relative min-h-screen flex items-center pt-16 overflow-hidden bg-white">
-        {/* Premium Background Image - Modern Corporate Headquarters */}
+      {/* === CINEMATIC HERO SECTION === */}
+      <section className="relative min-h-screen flex items-center pt-16 overflow-hidden bg-[#FFFFFF]">
+        {/* Cinematic Enterprise Background */}
         <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80" 
-            alt="Modern corporate headquarters" 
-            className="w-full h-full object-cover opacity-15"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent" />
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80')] bg-cover bg-center opacity-10" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#2563EB]/5 via-transparent to-[#0F172A]/5" />
+          
+          {/* Neural Network Particles */}
+          <div className="absolute inset-0 overflow-hidden">
+            {Array.from({ length: 80 }).map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-1 h-1 bg-[#2563EB]/20 rounded-full"
+                animate={{
+                  x: [0, Math.random() * 1000 - 500],
+                  y: [0, Math.random() * 1000 - 500],
+                  scale: [1, 1.5, 1],
+                  opacity: [0.2, 0.6, 0.2],
+                }}
+                transition={{
+                  duration: Math.random() * 30 + 20,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Glowing Network Lines */}
+          <svg className="absolute inset-0 w-full h-full">
+            <defs>
+              <linearGradient id="lineGradient">
+                <stop offset="0%" stopColor="#2563EB" stopOpacity="0.1" />
+                <stop offset="100%" stopColor="#0F172A" stopOpacity="0.1" />
+              </linearGradient>
+            </defs>
+            {Array.from({ length: 15 }).map((_, i) => (
+              <motion.line
+                key={i}
+                x1={Math.random() * 100 + "%"}
+                y1={Math.random() * 100 + "%"}
+                x2={Math.random() * 100 + "%"}
+                y2={Math.random() * 100 + "%"}
+                stroke="url(#lineGradient)"
+                strokeWidth="0.5"
+                animate={{
+                  opacity: [0.1, 0.4, 0.1],
+                }}
+                transition={{
+                  duration: Math.random() * 5 + 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+            ))}
+          </svg>
+
+          {/* Glowing Orbs */}
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#2563EB]/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-[#0F172A]/5 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#2563EB]/5 rounded-full blur-3xl" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-20 w-full">
@@ -144,10 +232,10 @@ export default function HomePage() {
                 transition={{ duration: 0.6, delay: 0.1 }}
                 className="flex items-center gap-3 mb-8"
               >
-                <span className="px-3 py-1 bg-[#2563EB]/10 text-[#2563EB] text-xs font-semibold rounded-full">
+                <span className="px-4 py-1.5 bg-[#2563EB]/10 text-[#2563EB] text-xs font-semibold rounded-full">
                   AI-Powered Enterprise Platform
                 </span>
-                <span className="px-3 py-1 bg-[#0F172A]/5 text-[#0F172A]/70 text-xs font-semibold rounded-full">
+                <span className="px-4 py-1.5 bg-[#0F172A]/5 text-[#0F172A]/70 text-xs font-semibold rounded-full">
                   Trusted by 10,000+ Businesses
                 </span>
               </motion.div>
@@ -158,8 +246,8 @@ export default function HomePage() {
                 transition={{ duration: 0.7, delay: 0.2 }}
                 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-[#0F172A] leading-tight tracking-tight mb-6"
               >
-                The AI Operating System
-                <span className="block text-[#2563EB] mt-2">for Global Enterprise</span>
+                Transform Every Business
+                <span className="block text-[#2563EB] mt-2">With AI-Powered Intelligence</span>
               </motion.h1>
               
               <motion.p 
@@ -168,8 +256,8 @@ export default function HomePage() {
                 transition={{ duration: 0.7, delay: 0.3 }}
                 className="text-lg text-[#0F172A]/70 mb-8 max-w-md leading-relaxed"
               >
-                Unify finance, inventory, HR, CRM, and analytics into one intelligent platform. 
-                WaveCore brings AI to every corner of your enterprise — from the warehouse to the boardroom.
+                One platform. Unlimited companies. Unlimited growth. 
+                AI ERP • POS • CRM • Accounting • Payroll • Inventory • Manufacturing • Analytics
               </motion.p>
               
               <motion.div 
@@ -195,30 +283,103 @@ export default function HomePage() {
               </motion.div>
             </motion.div>
 
-            {/* Right - Product Storytelling Image */}
+            {/* Right - Animated Dashboard Preview */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={isLoaded ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
               className="relative hidden lg:block"
             >
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-gray-100 bg-white">
-                <img 
-                  src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" 
-                  alt="WaveCore AI Platform" 
-                  className="w-full h-auto"
-                />
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white/80 to-transparent p-6">
+              <div className="relative bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-100 p-6 overflow-hidden">
+                {/* Glass reflection */}
+                <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-white/50 to-transparent pointer-events-none" />
+                
+                {/* Dashboard Header */}
+                <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-[#2563EB] rounded-lg flex items-center justify-center">
-                      <Brain className="w-4 h-4 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-[#0F172A]">AI-powered business intelligence</p>
-                      <p className="text-xs text-[#0F172A]/50">Real-time insights at your fingertips</p>
-                    </div>
+                    <div className="w-3 h-3 rounded-full bg-green-500" />
+                    <span className="text-xs font-medium text-[#0F172A]/60">Live System</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-[#0F172A]/40">
+                    <Activity className="w-3 h-3" />
+                    <span>AI Active</span>
                   </div>
                 </div>
+
+                {/* Animated Metrics */}
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  {metrics.map((metric, index) => (
+                    <motion.div
+                      key={metric.label}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={isLoaded ? { opacity: 1, y: 0 } : {}}
+                      transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+                      className="p-3 bg-[#F8FAFC] rounded-lg border border-gray-100"
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs text-[#0F172A]/50">{metric.label}</span>
+                        <metric.icon className="w-3 h-3 text-[#2563EB]" />
+                      </div>
+                      <div className="text-lg font-bold text-[#0F172A]">{metric.value}</div>
+                      <div className="text-xs text-green-500">{metric.change}</div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Animated Chart */}
+                <div className="h-32 bg-[#F8FAFC] rounded-lg border border-gray-100 p-2">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={revenueData}>
+                      <XAxis dataKey="name" stroke="#9CA3AF" fontSize={8} />
+                      <YAxis stroke="#9CA3AF" fontSize={8} />
+                      <Tooltip />
+                      <Area type="monotone" dataKey="revenue" stroke="#2563EB" fill="#2563EB" fillOpacity={0.1} strokeWidth={2} />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* AI Copilot Widget */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={isLoaded ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.8 }}
+                  className="mt-4 p-3 bg-gradient-to-r from-[#2563EB]/5 to-[#0F172A]/5 rounded-lg border border-[#2563EB]/10"
+                >
+                  <div className="flex items-start gap-3">
+                    <Brain className="w-4 h-4 text-[#2563EB] mt-0.5" />
+                    <div>
+                      <p className="text-xs font-medium text-[#0F172A]">AI Forecast</p>
+                      <p className="text-[10px] text-[#0F172A]/60">Revenue projected +12.5% this quarter</p>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Floating UI Elements */}
+                <motion.div
+                  className="absolute -top-2 -right-2 w-16 h-16 bg-[#2563EB]/10 rounded-full blur-2xl"
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.3, 0.6, 0.3],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                />
+                <motion.div
+                  className="absolute -bottom-2 -left-2 w-16 h-16 bg-[#0F172A]/10 rounded-full blur-2xl"
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.3, 0.6, 0.3],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 2,
+                  }}
+                />
               </div>
             </motion.div>
           </div>
@@ -237,20 +398,20 @@ export default function HomePage() {
         </motion.div>
       </section>
 
-      {/* TRUSTED BY - Global Brands */}
-      <section className="py-16 bg-[#F8FAFC] border-b border-gray-100">
+      {/* === TRUST BAR === */}
+      <section className="py-12 bg-[#F8FAFC] border-y border-gray-100">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-center mb-10"
+            className="text-center mb-8"
           >
-            <p className="text-sm font-medium text-[#0F172A]/50 uppercase tracking-wider">
+            <p className="text-sm font-medium text-[#0F172A]/40 uppercase tracking-wider">
               Trusted by 10,000+ businesses worldwide
             </p>
           </motion.div>
-          <div className="flex flex-wrap justify-center gap-12 md:gap-16 opacity-60">
+          <div className="flex flex-wrap justify-center gap-8 md:gap-12 opacity-60">
             {["Retail", "Manufacturing", "Healthcare", "Finance", "Logistics", "Education", "Government", "Technology"].map((industry, i) => (
               <motion.div
                 key={industry}
@@ -267,7 +428,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ERP MODULES - Premium Photography Section */}
+      {/* === LIVE DASHBOARD PREVIEW === */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
@@ -277,75 +438,236 @@ export default function HomePage() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">
-              One Platform. Every Function.
+              See WaveCore in Action
             </h2>
             <p className="text-[#0F172A]/60 max-w-2xl mx-auto text-lg">
-              From the warehouse to the boardroom, WaveCore unifies your entire enterprise with AI-powered intelligence.
+              Real-time ERP dashboard showing live data, AI insights, and business intelligence.
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { 
-                name: "Inventory Management", 
-                image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&q=80", 
-                desc: "Real-time stock tracking with AI predictions",
-                icon: Package 
-              },
-              { 
-                name: "Financial Operations", 
-                image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&q=80", 
-                desc: "Automated accounting and financial reporting",
-                icon: BarChart3 
-              },
-              { 
-                name: "Customer Relationship", 
-                image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&q=80", 
-                desc: "AI-driven CRM and customer insights",
-                icon: User 
-              },
-              { 
-                name: "Human Resources", 
-                image: "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=600&q=80", 
-                desc: "Streamlined payroll and employee management",
-                icon: Users 
-              },
-              { 
-                name: "Manufacturing Control", 
-                image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=600&q=80", 
-                desc: "Production planning and quality control",
-                icon: Factory 
-              },
-              { 
-                name: "Logistics & Fulfillment", 
-                image: "https://images.unsplash.com/photo-1553413077-190dd305871c?w=600&q=80", 
-                desc: "Advanced warehouse and distribution management",
-                icon: Store 
-              },
-            ].map((module, index) => (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative rounded-2xl overflow-hidden shadow-2xl border border-gray-100 bg-white p-8"
+          >
+            {/* Glass reflection */}
+            <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white/50 to-transparent pointer-events-none" />
+            
+            {/* Dashboard Header */}
+            <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-100">
+              <div className="flex items-center gap-4">
+                <div className="w-3 h-3 rounded-full bg-green-500" />
+                <span className="text-sm font-medium text-[#0F172A]/60">Live System — WaveCore ERP</span>
+              </div>
+              <div className="flex items-center gap-4 text-xs text-[#0F172A]/40">
+                <Activity className="w-4 h-4" />
+                <span>AI Copilot Active</span>
+                <span className="w-px h-4 bg-gray-200" />
+                <span>12,450 users online</span>
+              </div>
+            </div>
+
+            {/* Dashboard Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              {[
+                { label: "Revenue", value: "$1.24M", change: "+12.5%", icon: DollarSign },
+                { label: "Orders", value: "8,450", change: "+8.2%", icon: ShoppingCart },
+                { label: "Inventory", value: "23,400", change: "-3.1%", icon: Package },
+                { label: "Profit", value: "$489K", change: "+15.8%", icon: TrendingUp },
+              ].map((metric, index) => (
+                <motion.div
+                  key={metric.label}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.05 }}
+                  whileHover={{ y: -2 }}
+                  className="p-4 bg-[#F8FAFC] rounded-xl border border-gray-100 hover:shadow-md transition-all"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs text-[#0F172A]/50">{metric.label}</span>
+                    <metric.icon className="w-4 h-4 text-[#2563EB]" />
+                  </div>
+                  <div className="text-2xl font-bold text-[#0F172A]">{metric.value}</div>
+                  <div className="text-xs text-green-500">{metric.change}</div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Charts Row */}
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
               <motion.div
-                key={module.name}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="p-4 bg-[#F8FAFC] rounded-xl border border-gray-100"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-sm font-medium text-[#0F172A]">Revenue Trend</span>
+                  <LineChart className="w-4 h-4 text-[#2563EB]" />
+                </div>
+                <div className="h-40">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={revenueData}>
+                      <XAxis dataKey="name" stroke="#9CA3AF" fontSize={8} />
+                      <YAxis stroke="#9CA3AF" fontSize={8} />
+                      <Tooltip />
+                      <Area type="monotone" dataKey="revenue" stroke="#2563EB" fill="#2563EB" fillOpacity={0.1} strokeWidth={2} />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="p-4 bg-[#F8FAFC] rounded-xl border border-gray-100"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-sm font-medium text-[#0F172A]">Inventory by Warehouse</span>
+                  <Package className="w-4 h-4 text-[#2563EB]" />
+                </div>
+                <div className="h-40 flex items-end justify-around gap-2">
+                  {inventoryData.map((item, index) => (
+                    <motion.div
+                      key={item.name}
+                      initial={{ height: 0 }}
+                      whileInView={{ height: "auto" }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.05 }}
+                      className="flex flex-col items-center gap-1"
+                    >
+                      <motion.div
+                        initial={{ height: 0 }}
+                        whileInView={{ height: (item.value / 4500) * 120 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.05 + 0.2 }}
+                        className="w-8 bg-[#2563EB] rounded-t-md"
+                      />
+                      <span className="text-[10px] text-[#0F172A]/60">{item.name.split(" ")[1]}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+
+            {/* AI Copilot Widget */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="p-4 bg-gradient-to-r from-[#2563EB]/5 to-[#0F172A]/5 rounded-xl border border-[#2563EB]/10"
+            >
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 bg-[#2563EB] rounded-lg flex items-center justify-center">
+                  <Brain className="w-4 h-4 text-white" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-[#0F172A]">AI Copilot</span>
+                    <span className="text-xs text-green-500 flex items-center gap-1">
+                      <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                      Active
+                    </span>
+                  </div>
+                  <p className="text-sm text-[#0F172A]/70">
+                    Revenue forecast for next quarter shows 12.5% growth. Recommend increasing inventory for top 3 products.
+                  </p>
+                  <div className="mt-3 flex gap-2">
+                    <span className="text-xs px-2 py-1 bg-[#2563EB]/10 text-[#2563EB] rounded-full">Forecast</span>
+                    <span className="text-xs px-2 py-1 bg-[#0F172A]/5 text-[#0F172A]/60 rounded-full">Inventory</span>
+                    <span className="text-xs px-2 py-1 bg-[#0F172A]/5 text-[#0F172A]/60 rounded-full">Revenue</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Floating glass decoration */}
+            <motion.div
+              className="absolute -top-4 -right-4 w-24 h-24 bg-[#2563EB]/10 rounded-full blur-3xl"
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.6, 0.3],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+            <motion.div
+              className="absolute -bottom-4 -left-4 w-24 h-24 bg-[#0F172A]/10 rounded-full blur-3xl"
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.6, 0.3],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 2,
+              }}
+            />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* === INDUSTRIES SECTION === */}
+      <section className="py-24 bg-[#F8FAFC]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">
+              Built for Every Industry
+            </h2>
+            <p className="text-[#0F172A]/60 max-w-2xl mx-auto text-lg">
+              Tailored solutions for every sector — from retail to manufacturing, healthcare to logistics.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {[
+              { name: "Retail", image: "https://images.unsplash.com/photo-1473186578172-c141b6798cf4?w=400&q=80", count: "12,400+" },
+              { name: "Restaurant", image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&q=80", count: "8,200+" },
+              { name: "Wholesale", image: "https://images.unsplash.com/photo-1472851294608-054d19c6c836?w=400&q=80", count: "6,800+" },
+              { name: "Manufacturing", image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=400&q=80", count: "9,100+" },
+              { name: "Construction", image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&q=80", count: "4,500+" },
+              { name: "Schools", image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&q=80", count: "7,800+" },
+              { name: "Hospital", image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400&q=80", count: "5,200+" },
+              { name: "Pharmacy", image: "https://images.unsplash.com/photo-1576602971766-0dbcd2db510e?w=400&q=80", count: "3,400+" },
+              { name: "NGO", image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=400&q=80", count: "2,100+" },
+              { name: "Government", image: "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=400&q=80", count: "1,800+" },
+              { name: "E-commerce", image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&q=80", count: "15,600+" },
+              { name: "Distribution", image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&q=80", count: "6,300+" },
+            ].map((industry, index) => (
+              <motion.div
+                key={industry.name}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
+                transition={{ delay: index * 0.03 }}
                 whileHover={{ y: -4 }}
-                className="group relative overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-xl transition-all border border-gray-100"
+                className="relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-lg transition-all group"
               >
                 <div className="aspect-[4/3] overflow-hidden">
                   <img 
-                    src={module.image} 
-                    alt={module.name} 
+                    src={industry.image} 
+                    alt={industry.name} 
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/80 via-[#0F172A]/40 to-transparent" />
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <div className="flex items-center gap-2 mb-1">
-                    <module.icon className="w-4 h-4 text-white/80" />
-                    <h3 className="text-xl font-bold text-white">{module.name}</h3>
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold text-white">{industry.name}</h3>
+                    <span className="text-xs text-white/70">{industry.count}</span>
                   </div>
-                  <p className="text-sm text-white/80">{module.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -353,8 +675,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* AI COPILOT - Premium Photography Section */}
-      <section className="py-24 bg-[#F8FAFC]">
+      {/* === AI COPILOT SECTION === */}
+      <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
@@ -363,19 +685,22 @@ export default function HomePage() {
               viewport={{ once: true }}
               className="order-2 lg:order-1"
             >
-              <img 
-                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" 
-                alt="AI Technology" 
-                className="rounded-2xl shadow-xl border border-gray-200"
-              />
-              <div className="mt-4 flex items-center gap-4 text-sm text-[#0F172A]/60">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500" />
-                  <span>AI Active</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-[#2563EB]" />
-                  <span>Processing 1.2M records</span>
+              <div className="relative rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                <img 
+                  src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" 
+                  alt="AI Technology" 
+                  className="w-full h-auto"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white/80 to-transparent p-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-[#2563EB] rounded-lg flex items-center justify-center">
+                      <Brain className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-[#0F172A]">AI Copilot Active</p>
+                      <p className="text-xs text-[#0F172A]/50">Processing 1.2M records</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -404,7 +729,8 @@ export default function HomePage() {
                   "Detect fraud patterns in real-time",
                   "Generate comprehensive reports in seconds",
                   "Optimize reorder points automatically",
-                  "Predict cash flow trends with precision"
+                  "Predict cash flow trends with precision",
+                  "Voice commands and natural language queries"
                 ].map((item, i) => (
                   <motion.div
                     key={item}
@@ -426,8 +752,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* BUSINESS INTELLIGENCE - Premium Photography Section */}
-      <section className="py-24 bg-white">
+      {/* === BUSINESS INTELLIGENCE === */}
+      <section className="py-24 bg-[#F8FAFC]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
@@ -485,7 +811,8 @@ export default function HomePage() {
                   "Predictive analytics and forecasting",
                   "Automated reporting and insights",
                   "AI-powered recommendations",
-                  "Customizable data views"
+                  "Customizable data views",
+                  "Interactive maps and heatmaps"
                 ].map((item, i) => (
                   <motion.div
                     key={item}
@@ -507,61 +834,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* INDUSTRIES - Global Reach */}
-      <section className="py-24 bg-[#F8FAFC]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">
-              Built for Every Industry
-            </h2>
-            <p className="text-[#0F172A]/60 max-w-2xl mx-auto text-lg">
-              Tailored solutions for every sector — from retail to manufacturing, healthcare to logistics.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {[
-              { name: "Retail", image: "https://images.unsplash.com/photo-1473186578172-c141b6798cf4?w=400&q=80" },
-              { name: "Manufacturing", image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=400&q=80" },
-              { name: "Healthcare", image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400&q=80" },
-              { name: "Logistics", image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&q=80" },
-              { name: "Education", image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&q=80" },
-              { name: "Hospitality", image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=80" },
-              { name: "Finance", image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=400&q=80" },
-              { name: "Government", image: "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=400&q=80" },
-            ].map((industry, index) => (
-              <motion.div
-                key={industry.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.03 }}
-                whileHover={{ y: -4 }}
-                className="relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-lg transition-all group"
-              >
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img 
-                    src={industry.image} 
-                    alt={industry.name} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/70 via-[#0F172A]/30 to-transparent" />
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h3 className="text-lg font-semibold text-white">{industry.name}</h3>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* GLOBAL PRESENCE - Map Section */}
+      {/* === GLOBAL PRESENCE - MAP SECTION === */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
@@ -606,7 +879,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CUSTOMER SUCCESS STORIES */}
+      {/* === TESTIMONIALS === */}
       <section className="py-24 bg-[#F8FAFC]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
@@ -616,7 +889,7 @@ export default function HomePage() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">
-              Success Stories
+              What Our Customers Say
             </h2>
             <p className="text-[#0F172A]/60 max-w-2xl mx-auto text-lg">
               See how businesses are transforming with WaveCore.
@@ -673,7 +946,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* PRICING - Simple, Transparent */}
+      {/* === PRICING === */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
@@ -732,7 +1005,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FAQS */}
+      {/* === FAQS === */}
       <section className="py-24 bg-[#F8FAFC]">
         <div className="max-w-3xl mx-auto px-6 lg:px-8">
           <motion.div
@@ -792,7 +1065,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CONTACT / CTA */}
+      {/* === CONTACT / CTA === */}
       <section className="py-24 bg-[#0F172A]">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
           <motion.div
@@ -826,7 +1099,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FOOTER */}
+      {/* === FOOTER === */}
       <footer className="bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
